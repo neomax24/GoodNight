@@ -11,19 +11,30 @@
     <Grid>
         <Pivot Title="晚安">
             <PivotItem Header="晚安自己">
-                <Grid >
-                    <Grid Margin="0,0,0,391">
+                <Grid>
+                    <Grid Margin="0,0,0,421">
 
-                        <CheckBox Margin="310,30,0,0" Width="42" />
-                        <TextBlock HorizontalAlignment="Left" Margin="10,46,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="43" Width="96" FontSize="22"/>
-                        <TimePicker HorizontalAlignment="Left" Margin="133,32,0,0" VerticalAlignment="Top"/>
+                        <CheckBox Margin="310,-3,-132,-6" Width="42" Height="67" />
+                        <TextBlock HorizontalAlignment="Left"  TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="43" Width="96" FontSize="22" Margin="12,12,0,0"/>
+                        <TimePicker HorizontalAlignment="Center" VerticalAlignment="Top"/>
                     </Grid>
-                    <Button Margin="149,472,0,-3" Padding="0,-5,0,0" Height="80" Width="64" MinWidth="50" MinHeight="50" HorizontalAlignment="Left">
+                    <Button Margin="272,399,0,0" Padding="0,-5,0,0" Height="78" Width="64" MinWidth="50" MinHeight="50" HorizontalAlignment="Left">
                         <TextBlock Text="Speak" FontSize="20" >
 
                         </TextBlock>
                     </Button>
-                    <ListView HorizontalAlignment="Left" Height="354" Margin="0,119,0,0" VerticalAlignment="Top" Width="362"/>
+                    <ListView x:Name="checklist_time_peroid" HorizontalAlignment="Left" Height="340" Margin="0,63,0,0" VerticalAlignment="Top" Width="346">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding name}" FontSize="22" Margin="12"></TextBlock>
+                                    <Button Content="{Binding time_peroid_string}" FontSize="25" Width="60" Height="60" MinWidth="20" MinHeight="20">
+
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
                 </Grid>
             </PivotItem>
             <PivotItem Header="晚安朋友">
