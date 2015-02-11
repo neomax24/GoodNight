@@ -15,6 +15,9 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using WeiboSDKForWinRT;
+using Windows.ApplicationModel.Activation;
+using System.Threading.Tasks;
 
 // “基本页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
 
@@ -31,11 +34,14 @@ namespace GoodNight_Test_0
         public LoginPage()
         {
             this.InitializeComponent();
-
+            InitData();
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
+            is_weibo_login();
+
         }
+
 
         /// <summary>
         /// 获取与此 <see cref="Page"/> 关联的 <see cref="NavigationHelper"/>。
@@ -117,7 +123,34 @@ namespace GoodNight_Test_0
 
         private void weibo_login_button_Click(object sender, RoutedEventArgs e)
         {
-
+            Frame frame = new Frame();
+            frame = Window.Current.Content as Frame;
+            frame.Navigate(typeof(weibo_loginPage));
         }
+
+        private void InitData()
+        {
+            // TODO:编译运行之前需要开放平台参数.
+            SdkData.AppKey = "2321842552";
+            SdkData.AppSecret = "48dd08394b50889674c2101e9fc6a0b5";
+            SdkData.RedirectUri = "https://api.weibo.com/oauth2/default.html";
+            // prepare the pic to be shared.
+        }
+        private void is_weibo_login()
+        {
+            var Weibo_oauthClient = new ClientOAuth();
+            // 判断是否已经授权或者授权是否过期.
+            if (Weibo_oauthClient.IsAuthorized == false)
+            {
+
+            }
+            else
+            {
+                Frame frame = new Frame();
+                frame = Window.Current.Content as Frame;
+                frame.Navigate(typeof(GoodNightPage));
+            }
+        }
+
     }
 }

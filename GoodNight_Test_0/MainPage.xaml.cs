@@ -50,5 +50,6 @@ namespace GoodNight_Test_0
             Frame frame = Window.Current.Content as Frame;
             frame.Navigate(typeof(LoginPage));
         }
+
     }
 }

@@ -31,9 +31,8 @@
         <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
             <TextBox Name="email_textbox" HorizontalAlignment="Left" Height="38" Margin="10,55,0,0" TextWrapping="Wrap" Text="Email" VerticalAlignment="Top" Width="342"/>
             <PasswordBox Name="password_textbox" HorizontalAlignment="Left" Margin="10,132,0,0" VerticalAlignment="Top" Width="342"/>
-            <Button Name="login_button" Click="login_button_Click" Content="Login" HorizontalAlignment="Left" Margin="10,309,0,0" VerticalAlignment="Top" Height="69"/>
+            <Button Name="login_button" Click="login_button_Click" Content="Login" HorizontalAlignment="Left" Margin="10,310,0,0" VerticalAlignment="Top" Height="69"/>
             <Button Name="weibo_login_button" Click="weibo_login_button_Click" Content="WeiBo" HorizontalAlignment="Left" Margin="190,321,0,0" VerticalAlignment="Top" Width="74"/>
-
         </Grid>
     </Grid>
 </Page>

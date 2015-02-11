@@ -127,5 +127,45 @@ namespace GoodNight_Test_0
             // TODO: 保存应用程序状态并停止任何后台活动
             deferral.Complete();
         }
+#if WINDOWS_PHONE_APP
+        ContinuationManager continuationManager;
+        /// <summary>
+        /// Handle OnActivated event to deal with File Open/Save continuation activation kinds
+        /// </summary>
+        /// <param name="e">Application activated event arguments, it can be casted to proper sub-type based on ActivationKind</param>
+        protected override void OnActivated(IActivatedEventArgs e)
+        {
+            base.OnActivated(e);
+
+            continuationManager = new ContinuationManager();
+
+            Frame rootFrame = Window.Current.Content as Frame;
+
+            // Do not repeat app initialization when the Window already has content,
+            // just ensure that the window is active
+            if (rootFrame == null)
+            {
+                // Create a Frame to act as the navigation context and navigate to the first page
+                rootFrame = new Frame();
+                // Place the frame in the current Window
+                Window.Current.Content = rootFrame;
+            }
+
+            if (rootFrame.Content == null)
+            {
+                rootFrame.Navigate(typeof(weibo_loginPage));
+            }
+
+            var continuationEventArgs = e as IContinuationActivatedEventArgs;
+            if (continuationEventArgs != null)
+            {
+                // Call ContinuationManager to handle continuation activation
+                continuationManager.Continue(continuationEventArgs, rootFrame);
+            }
+
+            Window.Current.Activate();
+        }
+#endif
+
     }
 }
