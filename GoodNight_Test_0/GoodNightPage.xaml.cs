@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using WeiboSDKForWinRT;
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
 
@@ -36,7 +37,9 @@ namespace GoodNight_Test_0
 
         public GoodNightPage()
         {
+            var oauthClient = new ClientOAuth();
             this.InitializeComponent();
+            uidtest.Text = oauthClient.Uid;
 
         }
 
@@ -79,6 +82,15 @@ namespace GoodNight_Test_0
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        private void logout_test_Button_Click(object sender, RoutedEventArgs e)
+        {
+            var Weibo_oauthClient = new ClientOAuth();
+            Weibo_oauthClient.QuitOAuth();
+            Frame frame = new Frame();
+            frame = Window.Current.Content as Frame;
+            frame.Navigate(typeof(LoginPage));
         }
 
 

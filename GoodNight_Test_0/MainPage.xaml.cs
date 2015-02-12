@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using WeiboSDKForWinRT;
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=391641 上有介绍
 
@@ -47,8 +48,24 @@ namespace GoodNight_Test_0
 
         private void go_button_Click(object sender, RoutedEventArgs e)
         {
-            Frame frame = Window.Current.Content as Frame;
-            frame.Navigate(typeof(LoginPage));
+            is_weibo_login();
+        }
+
+        private void is_weibo_login()
+        {
+            var Weibo_oauthClient = new ClientOAuth();
+            // 判断是否已经授权或者授权是否过期.
+            if (Weibo_oauthClient.IsAuthorized == false)
+            {
+                Frame frame = Window.Current.Content as Frame;
+                frame.Navigate(typeof(LoginPage));
+            }
+            else
+            {
+                Frame frame = new Frame();
+                frame = Window.Current.Content as Frame;
+                frame.Navigate(typeof(GoodNightPage));
+            }
         }
 
     }

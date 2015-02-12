@@ -33,6 +33,7 @@
             <PasswordBox Name="password_textbox" HorizontalAlignment="Left" Margin="10,132,0,0" VerticalAlignment="Top" Width="342"/>
             <Button Name="login_button" Click="login_button_Click" Content="Login" HorizontalAlignment="Left" Margin="10,310,0,0" VerticalAlignment="Top" Height="69"/>
             <Button Name="weibo_login_button" Click="weibo_login_button_Click" Content="WeiBo" HorizontalAlignment="Left" Margin="190,321,0,0" VerticalAlignment="Top" Width="74"/>
+            <TextBlock Name="weibo_uid_test" HorizontalAlignment="Left" Margin="190,374,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
         </Grid>
     </Grid>
 </Page>
