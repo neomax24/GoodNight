@@ -89,6 +89,7 @@
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="ContinuationManager.cs" />
+    <Compile Include="DB_TimePeriodList.cs" />
     <Compile Include="GoodNightPage.xaml.cs">
       <DependentUpon>GoodNightPage.xaml</DependentUpon>
     </Compile>
@@ -99,6 +100,8 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SQLite.cs" />
+    <Compile Include="SQLiteAsync.cs" />
     <Compile Include="weibo_loginPage.xaml.cs">
       <DependentUpon>weibo_loginPage.xaml</DependentUpon>
     </Compile>
@@ -147,6 +150,17 @@
     <Reference Include="WeiboSDKForWinRT">
       <HintPath>..\..\weiboSDK_2.2\bin\Debug\WeiboSDKForWinRT.winmd</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="Microsoft.VCLibs, version=12.0">
+      <Name>Microsoft Visual C++ 2013 Runtime Package for Windows Phone</Name>
+    </SDKReference>
+    <SDKReference Include="SQLite.WP81, Version=3.8.8.1">
+      <Name>SQLite for Windows Phone 8.1</Name>
+    </SDKReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>

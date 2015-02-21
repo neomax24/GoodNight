@@ -13,7 +13,10 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.Storage;
 using WeiboSDKForWinRT;
+using SQLite;
+using System.Threading.Tasks;
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
 
@@ -24,25 +27,13 @@ namespace GoodNight_Test_0
     /// </summary>
     public sealed partial class GoodNightPage : Page
     {
-        public class data_checklist_time_peroid_struct
-        {
-            public string name { get; set; }
-            public int time_peroid { get; set; }
-
-            public string time_peroid_string { get; set; }
-            public bool is_work { get; set; }
-
-        }
-        List<data_checklist_time_peroid_struct> data_checklist_time_peroid=new List<data_checklist_time_peroid_struct>();
-
         public GoodNightPage()
         {
             var oauthClient = new ClientOAuth();
             this.InitializeComponent();
             uidtest.Text = oauthClient.Uid;
-
+            CreatTable_TimePeriodList();
         }
-
         /// <summary>
         /// 在此页将要在 Frame 中显示时进行调用。
         /// </summary>
@@ -50,18 +41,7 @@ namespace GoodNight_Test_0
         /// 此参数通常用于配置页。</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            ///Bling测试
             
-            for (int i = 0; i < 10; i++)
-            {
-                data_checklist_time_peroid_struct data_checklist_time_peroid_struct_item = new data_checklist_time_peroid_struct();
-                data_checklist_time_peroid_struct_item.name = "test" + i.ToString();
-                data_checklist_time_peroid_struct_item.time_peroid = i;
-                data_checklist_time_peroid_struct_item.time_peroid_string = i.ToString();
-                data_checklist_time_peroid_struct_item.is_work = true;
-                data_checklist_time_peroid.Add(data_checklist_time_peroid_struct_item);
-            }
-            checklist_time_peroid.ItemsSource = data_checklist_time_peroid;
         }
 
         private void TextBlock_SelectionChanged(object sender, RoutedEventArgs e)
@@ -93,6 +73,52 @@ namespace GoodNight_Test_0
             frame.Navigate(typeof(LoginPage));
         }
 
+        private List<DB_TimePeriodList> list_timePeriodList;
+        private async void get_timePeriodList()
+        {
+            list_timePeriodList = await getTable_TimePeriodList();
+            this.checklist_time_peroid.ItemsSource = list_timePeriodList;
+        }
+        private SQLiteAsyncConnection GetConn()
+        {
+            return new SQLiteAsyncConnection(ApplicationData.Current.LocalFolder.Path + "\\GoodNight.db");
+        }
+        private async void CreatTable_TimePeriodList()
+        {
+            if (await isDataBaseExist_TimePeriodList()==false)
+            {
+                SQLiteAsyncConnection conn = GetConn();
+                await conn.CreateTableAsync<DB_TimePeriodList>();
+                insert_TimePeriodList(new DB_TimePeriodList("游戏",30,true));
+            }
+            get_timePeriodList();
+        }
+        private async void insert_TimePeriodList(DB_TimePeriodList data)
+        {
+            SQLiteAsyncConnection conn = GetConn();
+            await conn.InsertAsync(data);
+        }
+        private static async System.Threading.Tasks.Task<bool> isDataBaseExist_TimePeriodList()
+        {
+            string filePath = ApplicationData.Current.LocalFolder.Path + "\\GoodNight.db";
+            bool isFileExist=true;
+            try
+            {
+                Windows.Storage.StorageFile sf =await Windows.Storage.ApplicationData.Current.LocalFolder.GetFileAsync(filePath);
+            }
+            catch
+            {
+                isFileExist = false;
+            }
+            return isFileExist;
+        }
 
+        private async Task<List<DB_TimePeriodList>> getTable_TimePeriodList()
+        {
+            SQLiteAsyncConnection conn = GetConn();
+            var query = conn.Table<DB_TimePeriodList>();
+            List<DB_TimePeriodList> result = await query.ToListAsync();
+            return result;
+        }
     }
 }
