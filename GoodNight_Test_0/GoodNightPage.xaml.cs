@@ -100,7 +100,7 @@ namespace GoodNight_Test_0
         }
         private static async System.Threading.Tasks.Task<bool> isDataBaseExist_TimePeriodList()
         {
-            string filePath = ApplicationData.Current.LocalFolder.Path + "\\GoodNight.db";
+            string filePath = "GoodNight.db";
             bool isFileExist=true;
             try
             {
