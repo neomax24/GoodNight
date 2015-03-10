@@ -89,6 +89,7 @@
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="ContinuationManager.cs" />
+    <Compile Include="DB_Controller.cs" />
     <Compile Include="DB_TimePeriodList.cs" />
     <Compile Include="DB_TimePointList.cs" />
     <Compile Include="GoodNightPage.xaml.cs">

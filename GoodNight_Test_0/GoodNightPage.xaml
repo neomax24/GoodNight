@@ -31,7 +31,7 @@
                             </ListView.ItemTemplate>
                         </ListView>
 
-                        <ListView x:Name="checklist_time_peroid">
+                        <ListView x:Name="time_peroid_list">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">

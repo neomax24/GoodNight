@@ -32,7 +32,7 @@ namespace GoodNight_Test_0
             var oauthClient = new ClientOAuth();
             this.InitializeComponent();
             uidtest.Text = oauthClient.Uid;
-            CreatTable_TimePeriodList();
+            Initialization();
         }
         /// <summary>
         /// 在此页将要在 Frame 中显示时进行调用。
@@ -42,6 +42,18 @@ namespace GoodNight_Test_0
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             
+        }
+
+        private void Initialization()
+        {
+            InitializationDB();
+        }
+        private async void InitializationDB()
+        {
+            DB_Controller DB_myGoodnight = new DB_Controller();
+            await DB_myGoodnight.CreatTable_TimePeriodList();
+            this.time_points_list.ItemsSource = DB_myGoodnight.get_timePeriodList;
+            this.time_peroid_list.ItemsSource = DB_myGoodnight.get_timePointList;
         }
 
         private void TextBlock_SelectionChanged(object sender, RoutedEventArgs e)
@@ -71,80 +83,6 @@ namespace GoodNight_Test_0
             Frame frame = new Frame();
             frame = Window.Current.Content as Frame;
             frame.Navigate(typeof(LoginPage));
-        }
-
-        private List<DB_TimePeriodList> list_timePeriodList;
-        private List<DB_TimePointList> list_timePointList;
-
-        private async void get_timePeriodList()
-        {
-            list_timePeriodList = await getTable_TimePeriodList();
-            this.checklist_time_peroid.ItemsSource = list_timePeriodList;
-        }
-        private async void get_timePointList()
-        {
-            list_timePointList = await getTable_TimePointList();
-            this.time_points_list.ItemsSource = list_timePointList;
-        }
-
-        private SQLiteAsyncConnection GetConn()
-        {
-            return new SQLiteAsyncConnection(ApplicationData.Current.LocalFolder.Path + "\\GoodNight.db");
-        }
-        private async void CreatTable_TimePeriodList()
-        {
-            if (await isDataBaseExist()==false)
-            {
-                SQLiteAsyncConnection conn = GetConn();
-                await conn.CreateTableAsync<DB_TimePeriodList>();
-                await conn.CreateTableAsync<DB_TimePointList>();
-                insert_TimePeriodList(new DB_TimePeriodList("游戏", 30, true));
-                insert_TimePeriodList(new DB_TimePeriodList("微博", 45, true));
-                insert_TimePointList(new DB_TimePointList("睡觉", new DateTime(2015, 03, 10, 20, 30, 30), true));
-                insert_TimePointList(new DB_TimePointList("学习", new DateTime(2015, 03, 10, 20, 30, 30), true));
-            }
-            get_timePeriodList();
-            get_timePointList();
-        }
-        private async void insert_TimePeriodList(DB_TimePeriodList data)
-        {
-            SQLiteAsyncConnection conn = GetConn();
-            await conn.InsertAsync(data);
-        }
-        private async void insert_TimePointList(DB_TimePointList data)
-        {
-            SQLiteAsyncConnection conn = GetConn();
-            await conn.InsertAsync(data);
-        }
-        private static async System.Threading.Tasks.Task<bool> isDataBaseExist()
-        {
-            string filePath = "GoodNight.db";
-            bool isFileExist=true;
-            try
-            {
-                Windows.Storage.StorageFile sf =await Windows.Storage.ApplicationData.Current.LocalFolder.GetFileAsync(filePath);
-            }
-            catch
-            {
-                isFileExist = false;
-            }
-            return isFileExist;
-        }
-
-        private async Task<List<DB_TimePeriodList>> getTable_TimePeriodList()
-        {
-            SQLiteAsyncConnection conn = GetConn();
-            var query = conn.Table<DB_TimePeriodList>();
-            List<DB_TimePeriodList> result = await query.ToListAsync();
-            return result;
-        }
-
-        private async Task<List<DB_TimePointList>> getTable_TimePointList()
-        {
-            SQLiteAsyncConnection conn = GetConn();
-            var query = conn.Table<DB_TimePointList>();
-            List<DB_TimePointList> result = await query.ToListAsync();
-            return result;
         }
 
         private void add_Button_Click(object sender, RoutedEventArgs e)
