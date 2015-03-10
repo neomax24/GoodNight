@@ -90,5 +90,15 @@ namespace GoodNight_Test_0
 
         }
 
+        private void timePoint_add_flyout_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void timeProid_add_flyout_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
     }
 }

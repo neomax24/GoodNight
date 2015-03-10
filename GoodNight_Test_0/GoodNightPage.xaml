@@ -52,7 +52,15 @@
                         <TextBlock Text="Speak" FontSize="20" >
                         </TextBlock>
                     </Button>
-                    <Button Content="添加" Margin="10,364,0,-4" Height="78" Width="273"></Button>
+                    <Button Content="添加" Margin="10,364,0,-4" Height="78" Width="273">
+                        <Button.Flyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Name="timePoint_add_flyout" Text="添加时间点" Click="timePoint_add_flyout_Click"></MenuFlyoutItem>
+                                <MenuFlyoutSeparator/>
+                                <MenuFlyoutItem Name="timeProid_add_flyout" Text="添加时间段" Click="timeProid_add_flyout_Click"></MenuFlyoutItem>
+                            </MenuFlyout>
+                        </Button.Flyout>
+                    </Button>
                 </Grid>
             </PivotItem>
             <PivotItem Header="晚安朋友">
