@@ -74,31 +74,49 @@ namespace GoodNight_Test_0
         }
 
         private List<DB_TimePeriodList> list_timePeriodList;
+        private List<DB_TimePointList> list_timePointList;
+
         private async void get_timePeriodList()
         {
             list_timePeriodList = await getTable_TimePeriodList();
             this.checklist_time_peroid.ItemsSource = list_timePeriodList;
         }
+        private async void get_timePointList()
+        {
+            list_timePointList = await getTable_TimePointList();
+            this.time_points_list.ItemsSource = list_timePointList;
+        }
+
         private SQLiteAsyncConnection GetConn()
         {
             return new SQLiteAsyncConnection(ApplicationData.Current.LocalFolder.Path + "\\GoodNight.db");
         }
         private async void CreatTable_TimePeriodList()
         {
-            if (await isDataBaseExist_TimePeriodList()==false)
+            if (await isDataBaseExist()==false)
             {
                 SQLiteAsyncConnection conn = GetConn();
                 await conn.CreateTableAsync<DB_TimePeriodList>();
-                insert_TimePeriodList(new DB_TimePeriodList("游戏",30,true));
+                await conn.CreateTableAsync<DB_TimePointList>();
+                insert_TimePeriodList(new DB_TimePeriodList("游戏", 30, true));
+                insert_TimePeriodList(new DB_TimePeriodList("微博", 45, true));
+                insert_TimePointList(new DB_TimePointList("睡觉", new DateTime(2015, 03, 10, 20, 30, 30), true));
+                insert_TimePointList(new DB_TimePointList("学习", new DateTime(2015, 03, 10, 20, 30, 30), true));
             }
             get_timePeriodList();
+            get_timePointList();
         }
         private async void insert_TimePeriodList(DB_TimePeriodList data)
         {
             SQLiteAsyncConnection conn = GetConn();
             await conn.InsertAsync(data);
         }
-        private static async System.Threading.Tasks.Task<bool> isDataBaseExist_TimePeriodList()
+        private async void insert_TimePointList(DB_TimePointList data)
+        {
+            SQLiteAsyncConnection conn = GetConn();
+            await conn.InsertAsync(data);
+        }
+        private static async System.Threading.Tasks.Task<bool> isDataBaseExist()
         {
             string filePath = "GoodNight.db";
             bool isFileExist=true;
@@ -120,5 +138,19 @@ namespace GoodNight_Test_0
             List<DB_TimePeriodList> result = await query.ToListAsync();
             return result;
         }
+
+        private async Task<List<DB_TimePointList>> getTable_TimePointList()
+        {
+            SQLiteAsyncConnection conn = GetConn();
+            var query = conn.Table<DB_TimePointList>();
+            List<DB_TimePointList> result = await query.ToListAsync();
+            return result;
+        }
+
+        private void add_Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
     }
 }
