@@ -104,9 +104,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLite.cs" />
     <Compile Include="SQLiteAsync.cs" />
-    <Compile Include="timePointList_addPage.xaml.cs">
-      <DependentUpon>timePointList_addPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="weibo_loginPage.xaml.cs">
       <DependentUpon>weibo_loginPage.xaml</DependentUpon>
     </Compile>
@@ -141,10 +138,6 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="timePointList_addPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="weibo_loginPage.xaml">
       <SubType>Designer</SubType>

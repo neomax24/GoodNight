@@ -41,29 +41,19 @@ namespace GoodNight_Test_0
         /// 此参数通常用于配置页。</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-
+            
         }
 
         private void Initialization()
         {
             InitializationDB();
-            InitializationFlyout_peroid();
-        }
-        private void InitializationFlyout_peroid()
-        {
-            List<int> list_peroid=new List<int>();
-            for (int i = 0; i < 60; i++)
-            {
-                list_peroid.Add(i);
-            }
-            Peroid_Flyout.ItemsSource = list_peroid; 
         }
         private async void InitializationDB()
         {
             DB_Controller DB_myGoodnight = new DB_Controller();
             await DB_myGoodnight.CreatTable_TimePeriodList();
-            this.time_points_list.ItemsSource = DB_myGoodnight.get_timePointList;
-            this.time_peroid_list.ItemsSource = DB_myGoodnight.get_timePeriodList;
+            this.time_points_list.ItemsSource = DB_myGoodnight.get_timePeriodList;
+            this.time_peroid_list.ItemsSource = DB_myGoodnight.get_timePointList;
         }
 
         private void TextBlock_SelectionChanged(object sender, RoutedEventArgs e)
@@ -102,8 +92,7 @@ namespace GoodNight_Test_0
 
         private void timePoint_add_flyout_Click(object sender, RoutedEventArgs e)
         {
-            Frame frame = Window.Current.Content as Frame;
-            frame.Navigate(typeof(timePointList_addPage));
+
         }
 
         private void timeProid_add_flyout_Click(object sender, RoutedEventArgs e)

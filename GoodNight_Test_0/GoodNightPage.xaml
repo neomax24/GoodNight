@@ -18,15 +18,14 @@
         <Pivot Title="晚安">
             <PivotItem Header="晚安自己" Margin="10,0,10,5">
                 <Grid>
-                    <ScrollViewer Margin="0,0,0,70">
                     <StackPanel Margin="0,0,0,70">
                         <ListView x:Name="time_points_list">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{Binding NAME}"  FontSize="26" Margin="12,6,12,12" Width="140" Padding="0,8,0,0"  />
-                                        <TimePicker Time="{Binding TIME_POINT}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                                        <CheckBox IsChecked="{Binding IS_WORK}" Margin="45,0,0,0"/>
+                                        <TimePicker HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                                        <CheckBox Margin="45,0,0,0"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
@@ -36,27 +35,19 @@
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding NAME}" FontSize="26" Margin="12,6,12,12" Width="140" Padding="0,8,0,0" ></TextBlock>
-                                            <Button>
-                                                <Button.Flyout>
-                                                    
-                                                    <ListPickerFlyout x:Name="Peroid_Flyout">
-                                                        <ListPickerFlyout.ItemTemplate>
-                                                            <DataTemplate>
-                                                                <TextBlock Text="{Binding}"></TextBlock>
-                                                            </DataTemplate>
-                                                        </ListPickerFlyout.ItemTemplate>
-                                                    </ListPickerFlyout>
-                                                </Button.Flyout>
-                                            </Button>
-                                            <AppBarToggleButton Margin="60,0,0,0" Click="AppBarToggleButton_Click"></AppBarToggleButton>
+                                        <TextBlock Text="{Binding NAME}" FontSize="26" Margin="12,6,12,12" Width="140" Padding="0,8,0,0" ></TextBlock>
+                                        <ComboBox Width="60" FontSize="26" SelectedIndex="0" SelectionChanged="ComboBox_SelectionChanged">
+                                            <TextBlock Text="15" FontSize="26" Padding="15,0,0,0"></TextBlock>
+                                            <TextBlock Text="30" FontSize="26" Padding="15,0,0,0"></TextBlock>
+                                            <TextBlock Text="45" FontSize="26" Padding="15,0,0,0"></TextBlock>
+                                        </ComboBox>
+                                        <AppBarToggleButton Margin="60,0,0,0" Click="AppBarToggleButton_Click"></AppBarToggleButton>
                                     </StackPanel>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
 
                     </StackPanel>
-                    </ScrollViewer>
                     <Button Margin="290,364,0,-4" Padding="0,-5,0,0" Height="78" Width="64" MinWidth="50" MinHeight="50" HorizontalAlignment="Left">
                         <TextBlock Text="Speak" FontSize="20" >
                         </TextBlock>
