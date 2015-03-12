@@ -36,13 +36,20 @@
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding NAME}" FontSize="26" Margin="12,6,12,12" Width="140" Padding="0,8,0,0" ></TextBlock>
-                                        <ComboBox Width="60" FontSize="26" SelectedIndex="0" SelectionChanged="ComboBox_SelectionChanged">
-                                            <TextBlock Text="15" FontSize="26" Padding="15,0,0,0"></TextBlock>
-                                            <TextBlock Text="30" FontSize="26" Padding="15,0,0,0"></TextBlock>
-                                            <TextBlock Text="45" FontSize="26" Padding="15,0,0,0"></TextBlock>
-                                        </ComboBox>
-                                        <AppBarToggleButton Margin="60,0,0,0" Click="AppBarToggleButton_Click"></AppBarToggleButton>
+                                            <TextBlock Text="{Binding NAME}" FontSize="26" Margin="12,6,12,12" Width="140" Padding="0,8,0,0" ></TextBlock>
+                                            <Button>
+                                                <Button.Flyout>
+                                                    
+                                                    <ListPickerFlyout x:Name="Peroid_Flyout">
+                                                        <ListPickerFlyout.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock Text="{Binding}"></TextBlock>
+                                                            </DataTemplate>
+                                                        </ListPickerFlyout.ItemTemplate>
+                                                    </ListPickerFlyout>
+                                                </Button.Flyout>
+                                            </Button>
+                                            <AppBarToggleButton Margin="60,0,0,0" Click="AppBarToggleButton_Click"></AppBarToggleButton>
                                     </StackPanel>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
