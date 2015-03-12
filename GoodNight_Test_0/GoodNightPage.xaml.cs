@@ -92,7 +92,8 @@ namespace GoodNight_Test_0
 
         private void timePoint_add_flyout_Click(object sender, RoutedEventArgs e)
         {
-
+            Frame frame = Window.Current.Content as Frame;
+            frame.Navigate(typeof(timePointList_addPage));
         }
 
         private void timeProid_add_flyout_Click(object sender, RoutedEventArgs e)
