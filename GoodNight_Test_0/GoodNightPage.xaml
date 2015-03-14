@@ -13,7 +13,9 @@
             <AppBarButton Icon="Cancel" Label="appbarbutton"/>
         </CommandBar>
     </Page.BottomAppBar>
+    <Page.Resources>
 
+    </Page.Resources>
     <Grid>
         <Pivot Title="晚安">
             <PivotItem Header="晚安自己" Margin="10,0,10,5">
@@ -23,27 +25,40 @@
                         <ListView x:Name="time_points_list">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding NAME}"  FontSize="26" Margin="12,6,12,12" Width="140" Padding="0,8,0,0"  />
-                                        <TimePicker Time="{Binding TIME_POINT}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                                        <CheckBox IsChecked="{Binding IS_WORK}" Margin="45,0,0,0"/>
-                                    </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Name="timePoint_stackPanel" Holding="timePoint_stackPanel_Holding">
+                                            <TextBlock Text="{Binding NAME}"  FontSize="26" Margin="12,6,12,12" Width="140" Padding="0,8,0,0"/>
+                                            <TimePicker Time="{Binding TIME_POINT}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                                            <CheckBox IsChecked="{Binding IS_WORK}" Margin="45,0,0,0"/>
+                                            <FlyoutBase.AttachedFlyout>
+                                                <MenuFlyout>
+                                                    <MenuFlyoutItem Name="timePoint_delete" Text="删除" Click="timePoint_delete_Click"></MenuFlyoutItem>
+                                                </MenuFlyout>
+                                            </FlyoutBase.AttachedFlyout>
+                                        </StackPanel>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
 
-                        <ListView x:Name="time_peroid_list">
+                            <ListView x:Name="time_Period_list" SelectionMode="Extended">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding NAME}" FontSize="26" Margin="12,6,12,12" Width="140" Padding="0,8,0,0" ></TextBlock>
-                                        <ComboBox Width="60" FontSize="26" SelectedIndex="0" SelectionChanged="ComboBox_SelectionChanged">
-                                            <TextBlock Text="15" FontSize="26" Padding="15,0,0,0"></TextBlock>
-                                            <TextBlock Text="30" FontSize="26" Padding="15,0,0,0"></TextBlock>
-                                            <TextBlock Text="45" FontSize="26" Padding="15,0,0,0"></TextBlock>
-                                        </ComboBox>
-                                        <AppBarToggleButton Margin="60,0,0,0" Click="AppBarToggleButton_Click"></AppBarToggleButton>
-                                    </StackPanel>
+                                        <StackPanel>
+                                            <StackPanel Name="timePeriod_stackPanel" Orientation="Horizontal" Holding="timePeriod_stackPanel_Holding">
+                                                <TextBlock Text="{Binding NAME}" FontSize="26" Margin="12,6,12,12" Width="140" Padding="0,8,0,0" ></TextBlock>
+                                                <ComboBox DropDownOpened="timePeriod_ComboBox_DropDownOpened" Width="60" FontSize="26" SelectedIndex="0" SelectionChanged="ComboBox_SelectionChanged">
+                                                    <ComboBoxItem Content="15" FontSize="26" Padding="15,0,0,0"></ComboBoxItem>
+                                                    <ComboBoxItem Content="30" FontSize="26" Padding="15,0,0,0"></ComboBoxItem>
+                                                    <ComboBoxItem Content="45" FontSize="26" Padding="15,0,0,0"></ComboBoxItem>
+                                                </ComboBox>
+                                                <AppBarToggleButton Name="timePeriod_IsWork" IsChecked="{Binding IS_WORK}" Margin="60,0,0,0" Checked="timePeriod_IsWork_Checked" Unchecked="timePeriod_IsWork_Unchecked"></AppBarToggleButton>
+                                                <FlyoutBase.AttachedFlyout>
+                                                    <MenuFlyout>
+                                                        <MenuFlyoutItem Name="timePeriod_delete" Text="删除" Click="timePeriod_delete_Click"></MenuFlyoutItem>
+                                                    </MenuFlyout>
+                                                </FlyoutBase.AttachedFlyout>
+                                            </StackPanel>
+                                            <ProgressBar Minimum="0" Maximum="{Binding TIME_PERIOD_second}" Value="{Binding get_timePeriod_barValue}"></ProgressBar>
+                                        </StackPanel>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
@@ -75,6 +90,7 @@
             </PivotItem>
             <PivotItem Header="更多">
                 <Grid>
+                    
                     <TextBlock Name="uidtest" Margin="0,0,0,327"></TextBlock>
                     <Button Name="logout_test_button" Margin="118,363,0,0" Click="logout_test_Button_Click"></Button>
                 </Grid>

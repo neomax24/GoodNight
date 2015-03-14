@@ -20,9 +20,9 @@ namespace GoodNight_Test_0
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class timePeroid_addPage : Page
+    public sealed partial class timePeriod_addPage : Page
     {
-        public timePeroid_addPage()
+        public timePeriod_addPage()
         {
             this.InitializeComponent();
         }
@@ -34,6 +34,24 @@ namespace GoodNight_Test_0
         /// 此参数通常用于配置页。</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+        }
+
+        private void confirm_Click(object sender, RoutedEventArgs e)
+        {
+            DB_TimePeriodList timePeriodList = new DB_TimePeriodList(__name.Text,Convert.ToInt32(((ComboBoxItem)__time.SelectedItem).Content.ToString()), (bool)__is_work.IsChecked);
+            DB_Controller DB = new DB_Controller();
+            DB.insert_TimePeriodList(timePeriodList);
+            toGoodNightPage();
+        }
+        private void toGoodNightPage()
+        {
+            Frame frame = Window.Current.Content as Frame;
+            frame.Navigate(typeof(GoodNightPage));
+        }
+
+        private void cancel_Click(object sender, RoutedEventArgs e)
+        {
+            toGoodNightPage();
         }
     }
 }

@@ -107,6 +107,9 @@
     <Compile Include="timePeroid_addPage.xaml.cs">
       <DependentUpon>timePeroid_addPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="timePointList_addPage.xaml.cs">
+      <DependentUpon>timePointList_addPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="weibo_loginPage.xaml.cs">
       <DependentUpon>weibo_loginPage.xaml</DependentUpon>
     </Compile>
@@ -143,6 +146,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="timePeroid_addPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="timePointList_addPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

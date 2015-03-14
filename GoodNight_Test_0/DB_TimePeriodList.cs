@@ -27,9 +27,18 @@ namespace GoodNight_Test_0
 
         private int time_period;
         public int TIME_PERIOD { get { return time_period; } set { time_period = value; } }
-
+        public int TIME_PERIOD_second { get { return time_period * 60; } }
         private bool isWork;
         public bool IS_WORK { get { return isWork; } set { isWork = value; } }
+
+        private string timeStart;
+        public string TIMESTART { get { return timeStart; } set { timeStart = value; } }
+        private string timeEnd;
+        public string TIMEEND { get { return timeEnd; } set { timeEnd = value; } }
+
+
+        private int timePeriod_barValue;
+        public int get_timePeriod_barValue { get { timePeriod_barValue =(int)( DateTime.Now.Subtract(DateTime.Parse(timeStart)).TotalSeconds); return timePeriod_barValue; } }
     }
 
 }

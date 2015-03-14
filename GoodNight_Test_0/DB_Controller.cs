@@ -10,20 +10,20 @@ namespace GoodNight_Test_0
     class DB_Controller
     {
         private List<DB_TimePeriodList> list_timePeriodList;
-        public List<DB_TimePeriodList> get_timePeriodList { get { return list_timePeriodList; } }
+        public  List<DB_TimePeriodList> get_timePeriodList { get { return list_timePeriodList; } }
         private List<DB_TimePointList> list_timePointList;
         public List<DB_TimePointList> get_timePointList { get { return list_timePointList; } }
-        public async Task CreatTable_TimePeriodList()
+        public async Task CreatTable()
         {
             if (await isDataBaseExist() == false)
             {
                 SQLiteAsyncConnection conn = GetConn();
                 await conn.CreateTableAsync<DB_TimePeriodList>();
                 await conn.CreateTableAsync<DB_TimePointList>();
-                insert_TimePeriodList(new DB_TimePeriodList("游戏", 30, true));
-                insert_TimePeriodList(new DB_TimePeriodList("微博", 45, true));
-                insert_TimePointList(new DB_TimePointList("睡觉", new TimeSpan(20, 30, 30), true));
-                insert_TimePointList(new DB_TimePointList("学习", new TimeSpan(20, 30, 30), true));
+                insert_TimePeriodList(new DB_TimePeriodList("游戏", 5, false));
+                insert_TimePeriodList(new DB_TimePeriodList("微博", 15, false));
+                insert_TimePointList(new DB_TimePointList("睡觉", new TimeSpan(20, 30, 30), false));
+                insert_TimePointList(new DB_TimePointList("学习", new TimeSpan(20, 30, 30), false));
             }
             await _get_timePeriodList();
             await _get_timePointList();
@@ -49,6 +49,21 @@ namespace GoodNight_Test_0
         {
             SQLiteAsyncConnection conn = GetConn();
             await conn.InsertAsync(data);
+        }
+        public async void delete_TimePeriodList(DB_TimePeriodList data)
+        {
+            SQLiteAsyncConnection conn = GetConn();
+            await conn.DeleteAsync(data);
+        }
+        public async void delete_TimePointList(DB_TimePointList data)
+        {
+            SQLiteAsyncConnection conn = GetConn();
+            await conn.DeleteAsync(data);
+        }
+        public async Task update_TimePeriodList(DB_TimePeriodList data)
+        {
+            SQLiteAsyncConnection conn = GetConn();
+            await conn.UpdateAsync(data);
         }
 
         private static async System.Threading.Tasks.Task<bool> isDataBaseExist()
@@ -78,6 +93,14 @@ namespace GoodNight_Test_0
             var query = conn.Table<DB_TimePointList>();
             List<DB_TimePointList> result = await query.ToListAsync();
             return result;
+        }
+        public async Task reflesh_timePeriod()
+        {
+            await _get_timePeriodList();
+        }
+        public async Task reflesh_timePoint()
+        {
+            await _get_timePointList();
         }
     }
 }
