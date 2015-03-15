@@ -38,7 +38,17 @@ namespace GoodNight_Test_0
 
 
         private int timePeriod_barValue;
-        public int get_timePeriod_barValue { get { timePeriod_barValue =(int)( DateTime.Now.Subtract(DateTime.Parse(timeStart)).TotalSeconds); return timePeriod_barValue; } }
+        public int TimePeriod_barValue { get { return timePeriod_barValue; } set { timePeriod_barValue = value; } }
+        public int get_timePeriod_barValue 
+        { 
+            get 
+            {
+                if (IS_WORK == true)
+                    TimePeriod_barValue = (int)(DateTime.Now.Subtract(DateTime.Parse(timeStart)).TotalSeconds);
+                return TimePeriod_barValue;
+            }
+        }
+
     }
 
 }

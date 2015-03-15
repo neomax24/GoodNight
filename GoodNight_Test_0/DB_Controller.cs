@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 using SQLite;
+using System.Collections.ObjectModel;
+
 namespace GoodNight_Test_0
 {
     class DB_Controller
@@ -64,6 +66,11 @@ namespace GoodNight_Test_0
         {
             SQLiteAsyncConnection conn = GetConn();
             await conn.UpdateAsync(data);
+        }
+        public async Task update_TimePeriodListAll()
+        {
+            SQLiteAsyncConnection conn=GetConn();
+            await conn.UpdateAllAsync(list_timePeriodList);
         }
 
         private static async System.Threading.Tasks.Task<bool> isDataBaseExist()

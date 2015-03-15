@@ -43,21 +43,21 @@
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                         <StackPanel>
-                                            <StackPanel Name="timePeriod_stackPanel" Orientation="Horizontal" Holding="timePeriod_stackPanel_Holding">
+                                            <StackPanel PointerEntered="timePeriod_stackPanel_PointerEntered" PointerExited="timePeriod_stackPanel_PointerExited"  Name="timePeriod_stackPanel" Orientation="Horizontal" Holding="timePeriod_stackPanel_Holding">
                                                 <TextBlock Text="{Binding NAME}" FontSize="26" Margin="12,6,12,12" Width="140" Padding="0,8,0,0" ></TextBlock>
                                                 <ComboBox DropDownOpened="timePeriod_ComboBox_DropDownOpened" Width="60" FontSize="26" SelectedIndex="0" SelectionChanged="ComboBox_SelectionChanged">
                                                     <ComboBoxItem Content="15" FontSize="26" Padding="15,0,0,0"></ComboBoxItem>
                                                     <ComboBoxItem Content="30" FontSize="26" Padding="15,0,0,0"></ComboBoxItem>
                                                     <ComboBoxItem Content="45" FontSize="26" Padding="15,0,0,0"></ComboBoxItem>
                                                 </ComboBox>
-                                                <AppBarToggleButton Name="timePeriod_IsWork" IsChecked="{Binding IS_WORK}" Margin="60,0,0,0" Checked="timePeriod_IsWork_Checked" Unchecked="timePeriod_IsWork_Unchecked"></AppBarToggleButton>
+                                                <AppBarToggleButton Name="timePeriod_IsWork" Click="timePeriod_IsWork_Click" IsChecked="{Binding IS_WORK}" Margin="60,0,0,0"></AppBarToggleButton>
                                                 <FlyoutBase.AttachedFlyout>
                                                     <MenuFlyout>
                                                         <MenuFlyoutItem Name="timePeriod_delete" Text="删除" Click="timePeriod_delete_Click"></MenuFlyoutItem>
                                                     </MenuFlyout>
                                                 </FlyoutBase.AttachedFlyout>
                                             </StackPanel>
-                                            <ProgressBar Minimum="0" Maximum="{Binding TIME_PERIOD_second}" Value="{Binding get_timePeriod_barValue}"></ProgressBar>
+                                            <ProgressBar Minimum="0" Maximum="{Binding Path=TIME_PERIOD_second}" Value="{Binding Path=get_timePeriod_barValue}"></ProgressBar>
                                         </StackPanel>
                                 </DataTemplate>
                             </ListView.ItemTemplate>

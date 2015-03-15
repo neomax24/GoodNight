@@ -28,6 +28,10 @@ namespace GoodNight_Test_0
     /// </summary>
     public sealed partial class GoodNightPage : Page
     {
+
+        private List<DB_TimePeriodList> timePeriodListData=new List<DB_TimePeriodList>();
+        private List<DB_TimePointList> timePointListData=new List<DB_TimePointList>();
+
         public GoodNightPage()
         {
             var oauthClient = new ClientOAuth();
@@ -50,29 +54,31 @@ namespace GoodNight_Test_0
             InitializationDB();
             InitializationTimer();
         }
+        private DispatcherTimer dispatcherTimer = new DispatcherTimer();
         private void InitializationTimer()
         {
 
-            DispatcherTimer dispatcherTimer = new DispatcherTimer();
+            
             dispatcherTimer.Tick += dispatcherTimer_Tick;
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
-            dispatcherTimer.Start();
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 2);
         }
 
         async void dispatcherTimer_Tick(object sender, object e) 
         {
             DB_Controller DB = new DB_Controller();
             await DB.reflesh_timePeriod();
-            
-            time_Period_list.ItemsSource = DB.get_timePeriodList;
+            timePeriodListData = DB.get_timePeriodList;
+            time_Period_list.ItemsSource = timePeriodListData;
 
         }
         private async void InitializationDB()
         {
             DB_Controller DB_myGoodnight = new DB_Controller();
             await DB_myGoodnight.CreatTable();
-            this.time_points_list.ItemsSource = DB_myGoodnight.get_timePointList;
-            this.time_Period_list.ItemsSource = DB_myGoodnight.get_timePeriodList;
+            timePeriodListData = DB_myGoodnight.get_timePeriodList;
+            timePointListData = DB_myGoodnight.get_timePointList;
+            this.time_points_list.ItemsSource = timePointListData;
+            time_Period_list.ItemsSource = timePeriodListData;
         }
 
         private void TextBlock_SelectionChanged(object sender, RoutedEventArgs e)
@@ -131,7 +137,8 @@ namespace GoodNight_Test_0
             DB_Controller DB = new DB_Controller();
             DB.delete_TimePeriodList(selectedTimePeriod);
             await DB.reflesh_timePeriod();
-            time_Period_list.ItemsSource = DB.get_timePeriodList;
+            timePeriodListData = DB.get_timePeriodList;
+            time_Period_list.ItemsSource = timePeriodListData;
         }
 
         private void timePeriod_stackPanel_Holding(object sender, HoldingRoutedEventArgs e)
@@ -158,34 +165,56 @@ namespace GoodNight_Test_0
             DB_Controller DB = new DB_Controller();
             DB.delete_TimePointList(selectedTimePoint);
             await DB.reflesh_timePoint();
-            time_points_list.ItemsSource = DB.get_timePointList;
+            timePointListData = DB.get_timePointList;
+            time_points_list.ItemsSource = timePointListData;
         }
-
-        private async void timePeriod_IsWork_Checked(object sender, RoutedEventArgs e)
+        private async void timePeriod_IsWork_Click(object sender, RoutedEventArgs e)
         {
             DB_TimePeriodList selectedTimePeriod = ((AppBarToggleButton)sender).DataContext as DB_TimePeriodList;
-            if (selectedTimePeriod.IS_WORK == false)
+            if (((AppBarToggleButton)sender).IsChecked == true & timePeriodWorkMutexCheck())
             {
                 selectedTimePeriod.TIMESTART = DateTime.Now.ToString("s");
                 selectedTimePeriod.IS_WORK = true;
                 selectedTimePeriod.TIMEEND = DateTime.Parse(selectedTimePeriod.TIMESTART).AddMinutes(selectedTimePeriod.TIME_PERIOD).ToString("s");
                 DB_Controller db = new DB_Controller();
                 await db.update_TimePeriodList(selectedTimePeriod);
+                dispatcherTimer.Start();
+            }
+            else if(((AppBarToggleButton)sender).IsChecked == false)
+            {
+                selectedTimePeriod.IS_WORK = false;
+                DB_Controller db = new DB_Controller();
+                await db.update_TimePeriodList(selectedTimePeriod);
+
                 DB_Controller db_test = new DB_Controller();
                 await db_test.reflesh_timePeriod();
                 List<DB_TimePeriodList> test_list = db_test.get_timePeriodList;
+                dispatcherTimer.Stop();
             }
-            //((StackPanel)((StackPanel)((AppBarToggleButton)sender).Parent).Parent).Children.Add(bar);
+            else
+            {
+                ((AppBarToggleButton)sender).IsChecked = false;
+            }
         }
 
-        private void timePeriod_IsWork_Unchecked(object sender, RoutedEventArgs e)
+        private bool timePeriodWorkMutexCheck()
         {
-            DB_TimePeriodList selectedTimePeriod = ((AppBarToggleButton)sender).DataContext as DB_TimePeriodList;
-            selectedTimePeriod.IS_WORK = false;
-            DB_Controller db = new DB_Controller();
-            db.update_TimePeriodList(selectedTimePeriod);
+            foreach (DB_TimePeriodList s in timePeriodListData)
+            {
+                if (s.IS_WORK == true)
+                    return false;
+            }
+            return true;
         }
 
+        private void timePeriod_stackPanel_PointerEntered(object sender, PointerRoutedEventArgs e)
+        {
+            dispatcherTimer.Stop();
+        }
 
+        private void timePeriod_stackPanel_PointerExited(object sender, PointerRoutedEventArgs e)
+        {
+            dispatcherTimer.Start();
+        }
     }
 }
