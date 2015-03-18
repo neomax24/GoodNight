@@ -22,7 +22,7 @@ namespace GoodNight_Test_0
                 SQLiteAsyncConnection conn = GetConn();
                 await conn.CreateTableAsync<DB_TimePeriodList>();
                 await conn.CreateTableAsync<DB_TimePointList>();
-                insert_TimePeriodList(new DB_TimePeriodList("游戏", 5, false));
+                insert_TimePeriodList(new DB_TimePeriodList("游戏", 1, false));
                 insert_TimePeriodList(new DB_TimePeriodList("微博", 15, false));
                 insert_TimePointList(new DB_TimePointList("睡觉", new TimeSpan(20, 30, 30), false));
                 insert_TimePointList(new DB_TimePointList("学习", new TimeSpan(20, 30, 30), false));

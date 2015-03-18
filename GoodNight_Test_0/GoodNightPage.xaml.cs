@@ -18,6 +18,9 @@ using WeiboSDKForWinRT;
 using SQLite;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Media.Animation;
+using Coding4Fun;
+using Windows.UI.Notifications;
+using Windows.Data.Xml.Dom;
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
 
@@ -67,8 +70,10 @@ namespace GoodNight_Test_0
         {
             DB_Controller DB = new DB_Controller();
             await DB.reflesh_timePeriod();
-            timePeriodListData = DB.get_timePeriodList;
-            time_Period_list.ItemsSource = timePeriodListData;
+            foreach(DB_TimePeriodList s in timePeriodListData)
+            {
+                s.TimePeriod_barValue = timePeriodListData[timePeriodListData.IndexOf(s)].get_timePeriod_barValue();
+            }
 
         }
         private async void InitializationDB()
@@ -91,15 +96,6 @@ namespace GoodNight_Test_0
 
         }
 
-        private void AppBarToggleButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
 
         private void logout_test_Button_Click(object sender, RoutedEventArgs e)
         {
@@ -125,10 +121,6 @@ namespace GoodNight_Test_0
         {
             Frame frame = Window.Current.Content as Frame;
             frame.Navigate(typeof(timePeriod_addPage));
-        }
-
-        private void timePeriod_ComboBox_DropDownOpened(object sender, object e)
-        {
         }
 
         private async void timePeriod_delete_Click(object sender, RoutedEventArgs e)
@@ -170,17 +162,27 @@ namespace GoodNight_Test_0
         }
         private async void timePeriod_IsWork_Click(object sender, RoutedEventArgs e)
         {
-            DB_TimePeriodList selectedTimePeriod = ((AppBarToggleButton)sender).DataContext as DB_TimePeriodList;
-            if (((AppBarToggleButton)sender).IsChecked == true & timePeriodWorkMutexCheck())
+            DB_TimePeriodList selectedTimePeriod = ((Coding4Fun.Toolkit.Controls.OpacityToggleButton)sender).DataContext as DB_TimePeriodList;
+            if (((Coding4Fun.Toolkit.Controls.OpacityToggleButton)sender).IsChecked == true & timePeriodWorkMutexCheck())
             {
                 selectedTimePeriod.TIMESTART = DateTime.Now.ToString("s");
                 selectedTimePeriod.IS_WORK = true;
+                selectedTimePeriod.TimePeriod_barValue = 0;
                 selectedTimePeriod.TIMEEND = DateTime.Parse(selectedTimePeriod.TIMESTART).AddMinutes(selectedTimePeriod.TIME_PERIOD).ToString("s");
                 DB_Controller db = new DB_Controller();
                 await db.update_TimePeriodList(selectedTimePeriod);
+                
+                XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText02);
+                XmlNodeList toastNodeList = toastXml.GetElementsByTagName("text");
+                toastNodeList.Item(0).AppendChild(toastXml.CreateTextNode("Time is up"));
+                toastNodeList.Item(1).AppendChild(toastXml.CreateTextNode("Time Period toast test"));
+                ScheduledToastNotification recurringToast = new ScheduledToastNotification(toastXml, DateTime.Parse(selectedTimePeriod.TIMEEND));
+                recurringToast.Id = "Period"+selectedTimePeriod.ID.ToString();
+                ToastNotificationManager.CreateToastNotifier().AddToSchedule(recurringToast);
+
                 dispatcherTimer.Start();
             }
-            else if(((AppBarToggleButton)sender).IsChecked == false)
+            else if (((Coding4Fun.Toolkit.Controls.OpacityToggleButton)sender).IsChecked == false)
             {
                 selectedTimePeriod.IS_WORK = false;
                 DB_Controller db = new DB_Controller();
@@ -190,15 +192,28 @@ namespace GoodNight_Test_0
                 await db_test.reflesh_timePeriod();
                 List<DB_TimePeriodList> test_list = db_test.get_timePeriodList;
                 dispatcherTimer.Stop();
+                foreach (ScheduledToastNotification s in ToastNotificationManager.CreateToastNotifier().GetScheduledToastNotifications())
+                {
+                    if(s.Id=="Period"+selectedTimePeriod.ID.ToString())
+                    {
+                        ToastNotificationManager.CreateToastNotifier().RemoveFromSchedule(s);
+                        break;
+                    }
+                }
             }
             else
             {
-                ((AppBarToggleButton)sender).IsChecked = false;
+                ((Coding4Fun.Toolkit.Controls.OpacityToggleButton)sender).IsChecked = false;
+                Coding4Fun.Toolkit.Controls.ToastPrompt toast = new Coding4Fun.Toolkit.Controls.ToastPrompt();
+                toast.Message = "一心不可二用poi";
+                toast.Show();
             }
         }
 
         private bool timePeriodWorkMutexCheck()
         {
+            DB_Controller db = new DB_Controller();
+            
             foreach (DB_TimePeriodList s in timePeriodListData)
             {
                 if (s.IS_WORK == true)
@@ -207,14 +222,36 @@ namespace GoodNight_Test_0
             return true;
         }
 
-        private void timePeriod_stackPanel_PointerEntered(object sender, PointerRoutedEventArgs e)
+        private DB_TimePeriodList Period_picker_tamp = new DB_TimePeriodList();
+        private void Period_picker_button_Click(object sender, RoutedEventArgs e)
         {
-            dispatcherTimer.Stop();
+            Button button = sender as Button;
+            if (button != null)
+            {
+                ((TimePickerFlyout)FlyoutBase.GetAttachedFlyout(button)).Time = TimeSpan.FromMinutes(Convert.ToDouble(button.Content.ToString()));
+                Period_picker_tamp = button.DataContext as DB_TimePeriodList;
+                FlyoutBase.ShowAttachedFlyout(button);
+            }
         }
 
-        private void timePeriod_stackPanel_PointerExited(object sender, PointerRoutedEventArgs e)
+        private async void Period_pickerFlyout_TimePicked(TimePickerFlyout sender, TimePickedEventArgs args)
         {
-            dispatcherTimer.Start();
+            if (Convert.ToInt32(sender.Time.TotalMinutes) != 0)
+            {
+                Period_picker_tamp.TIME_PERIOD = Convert.ToInt32(sender.Time.TotalMinutes);
+                DB_Controller db = new DB_Controller();
+                await db.update_TimePeriodList(Period_picker_tamp);
+                foreach (DB_TimePeriodList s in timePeriodListData)
+                {
+                    if (s.ID == Period_picker_tamp.ID)
+                    {
+                        s.TIME_PERIOD = Period_picker_tamp.TIME_PERIOD;
+                        Period_picker_tamp = null;
+                        break;
+                    }
+                }
+            }
         }
+
     }
 }

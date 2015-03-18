@@ -5,6 +5,8 @@
     xmlns:local="using:GoodNight_Test_0"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:c4f="using:Coding4Fun.Toolkit.Controls"
+    
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.BottomAppBar>
@@ -27,13 +29,13 @@
                                 <DataTemplate>
                                         <StackPanel Orientation="Horizontal" Name="timePoint_stackPanel" Holding="timePoint_stackPanel_Holding">
                                             <TextBlock Text="{Binding NAME}"  FontSize="26" Margin="12,6,12,12" Width="140" Padding="0,8,0,0"/>
-                                            <TimePicker Time="{Binding TIME_POINT}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                                            <TimePicker  Time="{Binding TIME_POINT}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                                             <CheckBox IsChecked="{Binding IS_WORK}" Margin="45,0,0,0"/>
                                             <FlyoutBase.AttachedFlyout>
                                                 <MenuFlyout>
                                                     <MenuFlyoutItem Name="timePoint_delete" Text="删除" Click="timePoint_delete_Click"></MenuFlyoutItem>
                                                 </MenuFlyout>
-                                            </FlyoutBase.AttachedFlyout>
+                                            </FlyoutBase.AttachedFlyout> 
                                         </StackPanel>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
@@ -43,21 +45,21 @@
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                         <StackPanel>
-                                            <StackPanel PointerEntered="timePeriod_stackPanel_PointerEntered" PointerExited="timePeriod_stackPanel_PointerExited"  Name="timePeriod_stackPanel" Orientation="Horizontal" Holding="timePeriod_stackPanel_Holding">
+                                            <StackPanel Name="timePeriod_stackPanel" Orientation="Horizontal" Holding="timePeriod_stackPanel_Holding">
                                                 <TextBlock Text="{Binding NAME}" FontSize="26" Margin="12,6,12,12" Width="140" Padding="0,8,0,0" ></TextBlock>
-                                                <ComboBox DropDownOpened="timePeriod_ComboBox_DropDownOpened" Width="60" FontSize="26" SelectedIndex="0" SelectionChanged="ComboBox_SelectionChanged">
-                                                    <ComboBoxItem Content="15" FontSize="26" Padding="15,0,0,0"></ComboBoxItem>
-                                                    <ComboBoxItem Content="30" FontSize="26" Padding="15,0,0,0"></ComboBoxItem>
-                                                    <ComboBoxItem Content="45" FontSize="26" Padding="15,0,0,0"></ComboBoxItem>
-                                                </ComboBox>
-                                                <AppBarToggleButton Name="timePeriod_IsWork" Click="timePeriod_IsWork_Click" IsChecked="{Binding IS_WORK}" Margin="60,0,0,0"></AppBarToggleButton>
+                                                <Button Content="{Binding TIME_PERIOD}" Name="Period_picker_button" Click="Period_picker_button_Click">
+                                                    <FlyoutBase.AttachedFlyout>
+                                                        <TimePickerFlyout x:Name="Period_pickerFlyout" TimePicked="Period_pickerFlyout_TimePicked"></TimePickerFlyout>
+                                                    </FlyoutBase.AttachedFlyout>
+                                                </Button>
+                                                <c4f:OpacityToggleButton Name="timePeriod_IsWork" Click="timePeriod_IsWork_Click" IsChecked="{Binding IS_WORK}" Margin="20,0,0,0"></c4f:OpacityToggleButton>
                                                 <FlyoutBase.AttachedFlyout>
                                                     <MenuFlyout>
                                                         <MenuFlyoutItem Name="timePeriod_delete" Text="删除" Click="timePeriod_delete_Click"></MenuFlyoutItem>
                                                     </MenuFlyout>
                                                 </FlyoutBase.AttachedFlyout>
                                             </StackPanel>
-                                            <ProgressBar Minimum="0" Maximum="{Binding Path=TIME_PERIOD_second}" Value="{Binding Path=get_timePeriod_barValue}"></ProgressBar>
+                                            <ProgressBar  Minimum="0" Maximum="{Binding Path=TIME_PERIOD_second}" Value="{Binding Path=TimePeriod_barValue,Mode=OneWay}"></ProgressBar>
                                         </StackPanel>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
@@ -96,7 +98,5 @@
                 </Grid>
             </PivotItem>
         </Pivot>
-
-
     </Grid>
 </Page>
