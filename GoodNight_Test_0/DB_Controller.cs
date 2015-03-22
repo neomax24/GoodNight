@@ -72,6 +72,11 @@ namespace GoodNight_Test_0
             SQLiteAsyncConnection conn=GetConn();
             await conn.UpdateAllAsync(list_timePeriodList);
         }
+        public async Task update_TimePointList(DB_TimePointList data)
+        {
+            SQLiteAsyncConnection conn = GetConn();
+            await conn.UpdateAsync(data);
+        }
 
         private static async System.Threading.Tasks.Task<bool> isDataBaseExist()
         {

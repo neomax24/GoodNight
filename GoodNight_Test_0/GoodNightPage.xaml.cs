@@ -54,8 +54,9 @@ namespace GoodNight_Test_0
 
         private void Initialization()
         {
-            InitializationDB();
             InitializationTimer();
+
+            InitializationDB();
         }
         private DispatcherTimer dispatcherTimer = new DispatcherTimer();
         private void InitializationTimer()
@@ -64,6 +65,7 @@ namespace GoodNight_Test_0
             
             dispatcherTimer.Tick += dispatcherTimer_Tick;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 2);
+
         }
 
         async void dispatcherTimer_Tick(object sender, object e) 
@@ -72,7 +74,7 @@ namespace GoodNight_Test_0
             await DB.reflesh_timePeriod();
             foreach(DB_TimePeriodList s in timePeriodListData)
             {
-                s.TimePeriod_barValue = timePeriodListData[timePeriodListData.IndexOf(s)].get_timePeriod_barValue();
+                s.TimePeriod_barValue = s.get_timePeriod_barValue();
             }
 
         }
@@ -84,6 +86,14 @@ namespace GoodNight_Test_0
             timePointListData = DB_myGoodnight.get_timePointList;
             this.time_points_list.ItemsSource = timePointListData;
             time_Period_list.ItemsSource = timePeriodListData;
+            foreach (DB_TimePeriodList s in timePeriodListData)
+            {
+                if (s.IS_WORK == true)
+                {
+                    dispatcherTimer.Start();
+                    break;
+                }
+            }
         }
 
         private void TextBlock_SelectionChanged(object sender, RoutedEventArgs e)
@@ -163,15 +173,23 @@ namespace GoodNight_Test_0
         private async void timePeriod_IsWork_Click(object sender, RoutedEventArgs e)
         {
             DB_TimePeriodList selectedTimePeriod = ((Coding4Fun.Toolkit.Controls.OpacityToggleButton)sender).DataContext as DB_TimePeriodList;
-            if (((Coding4Fun.Toolkit.Controls.OpacityToggleButton)sender).IsChecked == true & timePeriodWorkMutexCheck())
+            if (((ToggleButton)sender).IsChecked == true & timePeriodWorkMutexCheck())
             {
                 selectedTimePeriod.TIMESTART = DateTime.Now.ToString("s");
                 selectedTimePeriod.IS_WORK = true;
                 selectedTimePeriod.TimePeriod_barValue = 0;
                 selectedTimePeriod.TIMEEND = DateTime.Parse(selectedTimePeriod.TIMESTART).AddMinutes(selectedTimePeriod.TIME_PERIOD).ToString("s");
+                foreach(DB_TimePeriodList s in timePeriodListData)
+                {
+                    if(s.ID==selectedTimePeriod.ID)
+                    {
+                        timePeriodListData[timePeriodListData.IndexOf(s)] = selectedTimePeriod;
+                        break;
+                    }
+                }
                 DB_Controller db = new DB_Controller();
                 await db.update_TimePeriodList(selectedTimePeriod);
-                
+
                 XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText02);
                 XmlNodeList toastNodeList = toastXml.GetElementsByTagName("text");
                 toastNodeList.Item(0).AppendChild(toastXml.CreateTextNode("Time is up"));
@@ -182,7 +200,7 @@ namespace GoodNight_Test_0
 
                 dispatcherTimer.Start();
             }
-            else if (((Coding4Fun.Toolkit.Controls.OpacityToggleButton)sender).IsChecked == false)
+            else if (((ToggleButton)sender).IsChecked == false)
             {
                 selectedTimePeriod.IS_WORK = false;
                 DB_Controller db = new DB_Controller();
@@ -203,7 +221,7 @@ namespace GoodNight_Test_0
             }
             else
             {
-                ((Coding4Fun.Toolkit.Controls.OpacityToggleButton)sender).IsChecked = false;
+                ((ToggleButton)sender).IsChecked = false;
                 Coding4Fun.Toolkit.Controls.ToastPrompt toast = new Coding4Fun.Toolkit.Controls.ToastPrompt();
                 toast.Message = "一心不可二用poi";
                 toast.Show();
@@ -239,18 +257,105 @@ namespace GoodNight_Test_0
             if (Convert.ToInt32(sender.Time.TotalMinutes) != 0)
             {
                 Period_picker_tamp.TIME_PERIOD = Convert.ToInt32(sender.Time.TotalMinutes);
+                Period_picker_tamp.TIMESTART = DateTime.Now.ToString("s");
+                Period_picker_tamp.TIMEEND = DateTime.Now.AddMinutes(Period_picker_tamp.TIME_PERIOD).ToString("s");
                 DB_Controller db = new DB_Controller();
                 await db.update_TimePeriodList(Period_picker_tamp);
+
+                foreach (ScheduledToastNotification s in ToastNotificationManager.CreateToastNotifier().GetScheduledToastNotifications())
+                {
+                    if (s.Id == "Period" + Period_picker_tamp.ID.ToString())
+                    {
+                        ScheduledToastNotification recurringToast = new ScheduledToastNotification(s.Content, DateTime.Parse(Period_picker_tamp.TIMEEND));
+                        ToastNotificationManager.CreateToastNotifier().RemoveFromSchedule(s);
+                        ToastNotificationManager.CreateToastNotifier().AddToSchedule(recurringToast);
+                        break;
+                    }
+                }
+
                 foreach (DB_TimePeriodList s in timePeriodListData)
                 {
                     if (s.ID == Period_picker_tamp.ID)
                     {
                         s.TIME_PERIOD = Period_picker_tamp.TIME_PERIOD;
+                        s.TIMESTART = Period_picker_tamp.TIMESTART;
+                        s.TIMEEND = Period_picker_tamp.TIMEEND;
                         Period_picker_tamp = null;
                         break;
                     }
                 }
             }
+        }
+
+        private async void timePoint_check_Click(object sender, RoutedEventArgs e)
+        { 
+
+            DB_TimePointList selectedTimePoint = ((CheckBox)sender).DataContext as DB_TimePointList;
+            if (((CheckBox)sender).IsChecked == true)
+            {
+                
+                selectedTimePoint.IS_WORK = true;
+                foreach(DB_TimePointList s in timePointListData)
+                {
+                    if(s.ID==selectedTimePoint.ID)
+                    {
+                        s.IS_WORK = selectedTimePoint.IS_WORK;
+                        break;
+                    }
+                }
+                DB_Controller db = new DB_Controller();
+                await db.update_TimePointList(selectedTimePoint);
+                DateTime now = DateTime.Now;
+                DateTime notificationTime = new DateTime(now.Year, now.Month, now.Day, (int)selectedTimePoint.TIME_POINT.Hours, (int)selectedTimePoint.TIME_POINT.Minutes, 0);
+                if(isTimePassed(selectedTimePoint.TIME_POINT))
+                {
+                    notificationTime = notificationTime.AddDays(1);
+                }
+                XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText02);
+                XmlNodeList toastNodeList = toastXml.GetElementsByTagName("text");
+                toastNodeList.Item(0).AppendChild(toastXml.CreateTextNode("Time is up"));
+                toastNodeList.Item(1).AppendChild(toastXml.CreateTextNode("Time Point toast test"));
+                ScheduledToastNotification recurringToast = new ScheduledToastNotification(toastXml, notificationTime);
+                recurringToast.Id = "Point" + selectedTimePoint.ID.ToString();
+                ToastNotificationManager.CreateToastNotifier().AddToSchedule(recurringToast);
+            }
+            else
+            {
+                selectedTimePoint.IS_WORK = false;
+                foreach (DB_TimePointList s in timePointListData)
+                {
+                    if (s.ID == selectedTimePoint.ID)
+                    {
+                        s.IS_WORK = selectedTimePoint.IS_WORK;
+                        break;
+                    }
+                }
+                DB_Controller db = new DB_Controller();
+                await db.update_TimePointList(selectedTimePoint);
+
+                foreach (ScheduledToastNotification s in ToastNotificationManager.CreateToastNotifier().GetScheduledToastNotifications())
+                {
+                    if (s.Id == "Point" + selectedTimePoint.ID.ToString())
+                    {
+                        ToastNotificationManager.CreateToastNotifier().RemoveFromSchedule(s);
+                        break;
+                    }
+                }
+            }
+        }
+
+        private bool isTimePassed(TimeSpan timeSpan)
+        {
+            DateTime now = DateTime.Now;
+            if(timeSpan.Hours<now.Hour)
+            {
+                return true;
+            }
+            else if (timeSpan.Hours == now.Hour && timeSpan.Minutes < now.Minute)
+            {
+                return true;
+            }
+            return false;
         }
 
     }

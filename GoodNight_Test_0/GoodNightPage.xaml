@@ -29,8 +29,8 @@
                                 <DataTemplate>
                                         <StackPanel Orientation="Horizontal" Name="timePoint_stackPanel" Holding="timePoint_stackPanel_Holding">
                                             <TextBlock Text="{Binding NAME}"  FontSize="26" Margin="12,6,12,12" Width="140" Padding="0,8,0,0"/>
-                                            <TimePicker  Time="{Binding TIME_POINT}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                                            <CheckBox IsChecked="{Binding IS_WORK}" Margin="45,0,0,0"/>
+                                            <TimePicker Name="timePoint_timePicker" Time="{Binding Path=TIME_POINT,Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                                            <CheckBox Name="timePoint_check" IsChecked="{Binding IS_WORK}" Click="timePoint_check_Click" Margin="45,0,0,0"/>
                                             <FlyoutBase.AttachedFlyout>
                                                 <MenuFlyout>
                                                     <MenuFlyoutItem Name="timePoint_delete" Text="删除" Click="timePoint_delete_Click"></MenuFlyoutItem>
@@ -52,7 +52,7 @@
                                                         <TimePickerFlyout x:Name="Period_pickerFlyout" TimePicked="Period_pickerFlyout_TimePicked"></TimePickerFlyout>
                                                     </FlyoutBase.AttachedFlyout>
                                                 </Button>
-                                                <c4f:OpacityToggleButton Name="timePeriod_IsWork" Click="timePeriod_IsWork_Click" IsChecked="{Binding IS_WORK}" Margin="20,0,0,0"></c4f:OpacityToggleButton>
+                                                <c4f:OpacityToggleButton  Name="timePeriod_IsWork" Click="timePeriod_IsWork_Click"  IsChecked="{Binding Path=IS_WORK,Mode=OneWay}" Margin="20,0,0,0"></c4f:OpacityToggleButton>
                                                 <FlyoutBase.AttachedFlyout>
                                                     <MenuFlyout>
                                                         <MenuFlyoutItem Name="timePeriod_delete" Text="删除" Click="timePeriod_delete_Click"></MenuFlyoutItem>

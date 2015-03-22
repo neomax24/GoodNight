@@ -31,7 +31,7 @@ namespace GoodNight_Test_0
         public int TIME_PERIOD { get { return time_period; } set { time_period = value; NotifyPropertyChange("TIME_PERIOD_second"); NotifyPropertyChange("TIME_PERIOD"); } }
         public int TIME_PERIOD_second { get { return time_period * 60; } set {   } }
         private bool isWork;
-        public bool IS_WORK { get { return isWork; } set { isWork = value; } }
+        public bool IS_WORK { get { return isWork; } set { isWork = value; NotifyPropertyChange("IS_WORK"); } }
 
         private string timeStart;
         public string TIMESTART { get { return timeStart; } set { timeStart = value; } }
@@ -40,13 +40,17 @@ namespace GoodNight_Test_0
 
 
         private int timePeriod_barValue=0;
-        public int TimePeriod_barValue { get { return timePeriod_barValue; } set { timePeriod_barValue = value; NotifyPropertyChange("TimePeriod_barValue"); } }
+        public int TimePeriod_barValue 
+        { 
+            get { return timePeriod_barValue; } 
+            set { timePeriod_barValue = value; NotifyPropertyChange("TimePeriod_barValue"); } 
+        }
         public int get_timePeriod_barValue()
         { 
                 if (IS_WORK == true)
-                    TimePeriod_barValue = (int)(DateTime.Now.Subtract(DateTime.Parse(timeStart)).TotalSeconds);
-                TimePeriod_barValue = Math.Min(TimePeriod_barValue, TIME_PERIOD_second);
-                return TimePeriod_barValue;
+                    timePeriod_barValue = (int)(DateTime.Now.Subtract(DateTime.Parse(timeStart)).TotalSeconds);
+                timePeriod_barValue = Math.Min(timePeriod_barValue, TIME_PERIOD_second);
+                return timePeriod_barValue;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
