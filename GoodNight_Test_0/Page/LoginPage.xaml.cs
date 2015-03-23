@@ -19,6 +19,8 @@ using WeiboSDKForWinRT;
 using Windows.ApplicationModel.Activation;
 using System.Threading.Tasks;
 using Windows.Security.Cryptography;
+using Windows.Security.Cryptography.Core;
+using System.Text.RegularExpressions;
 
 // “基本页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
 
@@ -115,9 +117,37 @@ namespace GoodNight_Test_0
         private void login_button_Click(object sender, RoutedEventArgs e)
         {
             //Todo
-            string passwrod_protected = CryptographicBuffer.EncodeToHexString(CryptographicBuffer.ConvertStringToBinary(password_textbox.Password,BinaryStringEncoding.Utf8));
+            if(!isEmailLegal(email_textbox.Text))
+            {
+                return;
+            }
+            if(!isPasswordLegal(password_textbox.Password))
+            {
+                return;
+            }
+
+            HashAlgorithmProvider hash = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Sha256);
+            Windows.Storage.Streams.IBuffer hash_result = hash.HashData(CryptographicBuffer.ConvertStringToBinary(password_textbox.Password, BinaryStringEncoding.Utf8));
+            string password_result = CryptographicBuffer.EncodeToHexString(hash_result);
             Frame frame = Window.Current.Content as Frame;
             frame.Navigate(typeof(GoodNightPage));
+        }
+
+        private bool isEmailLegal(string p)
+        {
+            string expression = @"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$";
+            if (Regex.IsMatch(p, expression, RegexOptions.None))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool isPasswordLegal(string p)
+        {
+            if (p.Length >= 6)
+                return true;
+            return false;
         }
         private void weibo_login_button_Click(object sender, RoutedEventArgs e)
         {

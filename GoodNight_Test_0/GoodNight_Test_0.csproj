@@ -193,7 +193,9 @@
     </SDKReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="WeiBoSDK\RestSharp.winmd" />
     <None Include="WeiBoSDK\WeiboSDKForWinRT.winmd" />
   </ItemGroup>
