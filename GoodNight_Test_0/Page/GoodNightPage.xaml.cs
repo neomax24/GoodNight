@@ -22,6 +22,8 @@ using Coding4Fun;
 using Windows.UI.Notifications;
 using Windows.Data.Xml.Dom;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.Graphics.Imaging;
+using Windows.Storage.Streams;
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
 
@@ -55,15 +57,28 @@ namespace GoodNight_Test_0
         private void Initialization()
         {
             InitializationTimer();
-            Test_More();
             InitializationDB();
         }
 
         private async void Test_More()
         {
-            BitmapImage avatar = new BitmapImage(new Uri("ms-appx:///Resource/avatar_test.jpg"));
 
+            StorageFolder applicationFolder = ApplicationData.Current.LocalFolder;
+            await applicationFolder.CreateFolderAsync("more", CreationCollisionOption.ReplaceExisting);
+            StorageFolder imageFolder = await applicationFolder.GetFolderAsync("more");
+            await imageFolder.CreateFileAsync("avatar.jpg", CreationCollisionOption.ReplaceExisting);
+            StorageFile imageFile = await imageFolder.GetFileAsync("avatar.jpg");
+            StorageFile inFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Resource/avatar_test.jpg"));
+            await inFile.CopyAndReplaceAsync(imageFile);
+            DB_More_Controll moreControll = new DB_More_Controll();
+            DB_More more =await moreControll.get_more();
+            more_nickName.Text = more.nickName;
+            more_sex.SelectedIndex = more.sex;
+            avatar_img.Source = new BitmapImage(new Uri(applicationFolder.Path + more.avatarPath));
+            more_declaration.Text = more.declaration;
         }
+
+
         private DispatcherTimer dispatcherTimer = new DispatcherTimer();
         private void InitializationTimer()
         {
@@ -100,6 +115,7 @@ namespace GoodNight_Test_0
                     break;
                 }
             }
+            Test_More();
         }
 
         private void TextBlock_SelectionChanged(object sender, RoutedEventArgs e)
@@ -362,6 +378,22 @@ namespace GoodNight_Test_0
                 return true;
             }
             return false;
+        }
+
+        private void more_declaration_panel_PointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            StackPanel stack = sender as StackPanel;
+            FlyoutBase.ShowAttachedFlyout(stack);
+        }
+
+        private void more_declaration_cancel_Click(object sender, RoutedEventArgs e)
+        {
+            declaration_flyout.Hide();
+        }
+
+        private void more_declaration_confirm_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO
         }
 
     }

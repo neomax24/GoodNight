@@ -99,24 +99,36 @@
                     <TextBlock Name="uidtest" Margin="0,0,0,327"></TextBlock>-->
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <Image Height="128" Width="128"></Image>
+                            <Image Height="128" Width="128" Name="avatar_img"></Image>
                         </StackPanel>
                         <StackPanel>
                             <Grid>
                                 <TextBlock FontSize="26" Text="昵称" Margin="5,5,5,5"></TextBlock>
-                                <TextBlock FontSize="26" Text="TEST"  HorizontalAlignment="Right" VerticalAlignment="Center" ></TextBlock>
+                                <TextBlock Name="more_nickName" FontSize="26" Text="TEST"  HorizontalAlignment="Right" VerticalAlignment="Center" ></TextBlock>
                             </Grid>
                         </StackPanel>
                         <StackPanel>
                             <Grid>
-                                <TextBlock FontSize="26" Text="性别" Margin="5,5,5,5"></TextBlock>
-                                <ComboBox HorizontalAlignment="Right" FontSize="18" Width="55" BorderThickness="1" Margin="0,-9,0,0" VerticalContentAlignment="Bottom">
+                                <TextBlock  FontSize="26" Text="性别" Margin="5,5,5,5"></TextBlock>
+                                <ComboBox Name="more_sex" HorizontalAlignment="Right" FontSize="18" Width="55" BorderThickness="1" Margin="0,-9,0,0" VerticalContentAlignment="Bottom">
                                     <ComboBoxItem  Content="♂" HorizontalAlignment="Center"></ComboBoxItem>
                                     <ComboBoxItem Content="♀" HorizontalAlignment="Center"></ComboBoxItem>
                                 </ComboBox>
                             </Grid>
                         </StackPanel>
-                        <StackPanel>
+                        <StackPanel Name="more_declaration_panel" PointerPressed="more_declaration_panel_PointerPressed">
+                            <FlyoutBase.AttachedFlyout>
+                                <Flyout Placement="Full" x:Name="declaration_flyout">
+                                    <StackPanel VerticalAlignment="Center" Margin="20,10,20,10">
+                                        <TextBlock Text="我的早睡宣言" FontSize="26"></TextBlock>
+                                        <TextBox Name="more_declaration"></TextBox>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <Button Name="more_declaration_confirm" Click="more_declaration_confirm_Click" Margin="0,0,20,0"></Button>
+                                            <Button Name="more_declaration_cancel" Click="more_declaration_cancel_Click" Margin="20,0,0,0"></Button>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Flyout>
+                            </FlyoutBase.AttachedFlyout>
                             <StackPanel.Transitions>
                                 <TransitionCollection>
                                     <RepositionThemeTransition/>

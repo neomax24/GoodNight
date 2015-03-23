@@ -28,6 +28,8 @@ namespace GoodNight_Test_0
                 insert_TimePeriodList(new DB_TimePeriodList("微博", 15, false));
                 insert_TimePointList(new DB_TimePointList("睡觉", new TimeSpan(20, 30, 30), false));
                 insert_TimePointList(new DB_TimePointList("学习", new TimeSpan(20, 30, 30), false));
+                DB_More_Controll moreControll=new DB_More_Controll();
+                moreControll.insertUpdate_More(new DB_More("Asuka", "anta baka?", 1, "\\more\\avatar.jpg"));
             }
             await _get_timePeriodList();
             await _get_timePointList();

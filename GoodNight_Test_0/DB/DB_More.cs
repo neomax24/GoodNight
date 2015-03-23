@@ -9,6 +9,16 @@ namespace GoodNight_Test_0
     [Table("DB_More")]
     class DB_More
     {
+        public DB_More()
+        { }
+
+        public DB_More(string __nickNmae,string __declaration,int __sex,string __avatarPath)
+        {
+            _nickName = __nickNmae;
+            _declaration = __declaration;
+            _sex = __sex;
+            _avatarPath = __avatarPath;
+        }
         private int id;
         [PrimaryKey,AutoIncrement]
         public int ID { get { return id; } set { id = value; } }

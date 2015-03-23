@@ -119,11 +119,11 @@ namespace GoodNight_Test_0
             //Todo
             if(!isEmailLegal(email_textbox.Text))
             {
-                return;
+             //   return;
             }
             if(!isPasswordLegal(password_textbox.Password))
             {
-                return;
+            //    return;
             }
 
             HashAlgorithmProvider hash = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Sha256);
