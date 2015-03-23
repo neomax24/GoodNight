@@ -18,6 +18,7 @@ using Windows.UI.Xaml.Navigation;
 using WeiboSDKForWinRT;
 using Windows.ApplicationModel.Activation;
 using System.Threading.Tasks;
+using Windows.Security.Cryptography;
 
 // “基本页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
 
@@ -114,10 +115,10 @@ namespace GoodNight_Test_0
         private void login_button_Click(object sender, RoutedEventArgs e)
         {
             //Todo
+            string passwrod_protected = CryptographicBuffer.EncodeToHexString(CryptographicBuffer.ConvertStringToBinary(password_textbox.Password,BinaryStringEncoding.Utf8));
             Frame frame = Window.Current.Content as Frame;
             frame.Navigate(typeof(GoodNightPage));
         }
-
         private void weibo_login_button_Click(object sender, RoutedEventArgs e)
         {
             Frame frame = new Frame();

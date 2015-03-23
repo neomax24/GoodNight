@@ -88,29 +88,30 @@
     <Compile Include="Common\ObservableDictionary.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
-    <Compile Include="ContinuationManager.cs" />
-    <Compile Include="DB_Controller.cs" />
-    <Compile Include="DB_TimePeriodList.cs" />
-    <Compile Include="DB_TimePointList.cs" />
-    <Compile Include="GoodNightPage.xaml.cs">
+    <Compile Include="DB\DB_Friend.cs" />
+    <Compile Include="WeiBoSDK\ContinuationManager.cs" />
+    <Compile Include="DB\DB_Controller_PeriodPoint.cs" />
+    <Compile Include="DB\DB_TimePeriodList.cs" />
+    <Compile Include="DB\DB_TimePointList.cs" />
+    <Compile Include="Page\GoodNightPage.xaml.cs">
       <DependentUpon>GoodNightPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LoginPage.xaml.cs">
+    <Compile Include="Page\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainPage.xaml.cs">
+    <Compile Include="Page\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SQLite.cs" />
-    <Compile Include="SQLiteAsync.cs" />
-    <Compile Include="timePeroid_addPage.xaml.cs">
+    <Compile Include="DB\SQLite.cs" />
+    <Compile Include="DB\SQLiteAsync.cs" />
+    <Compile Include="Page\timePeroid_addPage.xaml.cs">
       <DependentUpon>timePeroid_addPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="timePointList_addPage.xaml.cs">
+    <Compile Include="Page\timePointList_addPage.xaml.cs">
       <DependentUpon>timePointList_addPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="weibo_loginPage.xaml.cs">
+    <Compile Include="Page\weibo_loginPage.xaml.cs">
       <DependentUpon>weibo_loginPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -134,27 +135,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="GoodNightPage.xaml">
+    <Page Include="Page\GoodNightPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LoginPage.xaml">
+    <Page Include="Page\LoginPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainPage.xaml">
+    <Page Include="Page\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="timePeroid_addPage.xaml">
+    <Page Include="Page\timePeroid_addPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="timePointList_addPage.xaml">
+    <Page Include="Page\timePointList_addPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="weibo_loginPage.xaml">
+    <Page Include="Page\weibo_loginPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

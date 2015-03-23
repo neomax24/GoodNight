@@ -39,7 +39,6 @@ namespace GoodNight_Test_0
         {
             var oauthClient = new ClientOAuth();
             this.InitializeComponent();
-            uidtest.Text = oauthClient.Uid;
             Initialization();
         }
         /// <summary>
@@ -309,7 +308,7 @@ namespace GoodNight_Test_0
                 DateTime notificationTime = new DateTime(now.Year, now.Month, now.Day, (int)selectedTimePoint.TIME_POINT.Hours, (int)selectedTimePoint.TIME_POINT.Minutes, 0);
                 if(isTimePassed(selectedTimePoint.TIME_POINT))
                 {
-                    notificationTime = notificationTime.AddDays(1);
+                    return;
                 }
                 XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText02);
                 XmlNodeList toastNodeList = toastXml.GetElementsByTagName("text");
