@@ -1,0 +1,43 @@
+﻿<Page
+    x:Class="DemoApp.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DemoApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+
+        </Grid.RowDefinitions>
+        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" FontSize="30" Text="GoodNight Demo"/>
+
+        <Grid Grid.Row="1" Background="#FF4B4B4B">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="账号" FontSize="28" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,26.833"/>
+            <TextBlock Grid.Row="1" FontSize="28" Text="密码" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,22.167,0,15.5"/>
+            <PasswordBox Grid.Row="1" x:Name="PasswordTextBox" VerticalAlignment="Bottom" Margin="82,0,0,10.5" />
+            <TextBox x:Name="UserNameTextBox" Grid.Row="0" Margin="82,10,0,0"/>
+            <Button Grid.Row="2" x:Name="RegisterButton" Content="注册" HorizontalAlignment="Left" VerticalAlignment="Center" Click="RegisterButton_Click" Margin="56,6.5,0,7.333"/>
+            <Button x:Name="LoginButton" Grid.Row="2" Content="登录" HorizontalAlignment="Right"  Click="LoginButton_Click" Margin="0,6.5,57,7.333"/>
+        </Grid>
+        <Grid Grid.Row="2">
+            <TextBox x:Name="FriendIDBox" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,34" Width="286" PlaceholderText="请输入好友账号"/>
+            <Button x:Name="AddFriendButton"  Content="添加好友" HorizontalAlignment="Right" Click="AddFriendButton_Click"/>
+        </Grid>
+       
+        <Button x:Name="NotificationButton" Grid.Row="3" Content="推送提醒" HorizontalAlignment="Center" Click="NotificationButton_Click"/>
+        <Button Grid.Row="4" Content=" 定时提醒" HorizontalAlignment="Center"/>
+    </Grid>
+</Page>

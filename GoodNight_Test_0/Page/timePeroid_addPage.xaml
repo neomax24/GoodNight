@@ -1,0 +1,28 @@
+﻿<Page
+    x:Class="GoodNight_Test_0.timePeriod_addPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:GoodNight_Test_0"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBox Name="__name" FontSize="26" Margin="12,10,40,12" Width="140" Padding="0,8,0,0" ></TextBox>
+                <ComboBox Name="__time" Width="60" FontSize="26" SelectedIndex="0">
+                    <ComboBoxItem Content="15" FontSize="26" Padding="15,0,0,0"></ComboBoxItem>
+                    <ComboBoxItem Content="30" FontSize="26" Padding="15,0,0,0"></ComboBoxItem>
+                    <ComboBoxItem Content="45" FontSize="26" Padding="15,0,0,0"></ComboBoxItem>
+                </ComboBox>
+                <AppBarToggleButton Name="__is_work" Margin="20,0,0,0"></AppBarToggleButton>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Name="confirm" Content="确认" Margin="0,0,20,0" Click="confirm_Click"></Button>
+                <Button Name="cancel" Content="取消" Margin="20,0,0,0" Click="cancel_Click"></Button>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>
