@@ -89,8 +89,11 @@
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="DB\DB_Friend.cs" />
+    <Compile Include="DB\DB_Friend_Controll.cs" />
+    <Compile Include="DB\DB_More.cs" />
+    <Compile Include="DB\DB_More_Controll.cs" />
     <Compile Include="WeiBoSDK\ContinuationManager.cs" />
-    <Compile Include="DB\DB_Controller_PeriodPoint.cs" />
+    <Compile Include="DB\DB_Controller.cs" />
     <Compile Include="DB\DB_TimePeriodList.cs" />
     <Compile Include="DB\DB_TimePointList.cs" />
     <Compile Include="Page\GoodNightPage.xaml.cs">

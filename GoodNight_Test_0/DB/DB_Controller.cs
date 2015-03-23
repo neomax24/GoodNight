@@ -22,6 +22,8 @@ namespace GoodNight_Test_0
                 SQLiteAsyncConnection conn = GetConn();
                 await conn.CreateTableAsync<DB_TimePeriodList>();
                 await conn.CreateTableAsync<DB_TimePointList>();
+                await conn.CreateTableAsync<DB_Friend>();
+                await conn.CreateTableAsync<DB_More>();
                 insert_TimePeriodList(new DB_TimePeriodList("游戏", 1, false));
                 insert_TimePeriodList(new DB_TimePeriodList("微博", 15, false));
                 insert_TimePointList(new DB_TimePointList("睡觉", new TimeSpan(20, 30, 30), false));
@@ -38,7 +40,7 @@ namespace GoodNight_Test_0
         {
             list_timePointList = await getTable_TimePointList();
         }
-        private SQLiteAsyncConnection GetConn()
+        protected SQLiteAsyncConnection GetConn()
         {
             return new SQLiteAsyncConnection(ApplicationData.Current.LocalFolder.Path + "\\GoodNight.db");
         }
@@ -78,7 +80,7 @@ namespace GoodNight_Test_0
             await conn.UpdateAsync(data);
         }
 
-        private static async System.Threading.Tasks.Task<bool> isDataBaseExist()
+        protected static async System.Threading.Tasks.Task<bool> isDataBaseExist()
         {
             string filePath = "GoodNight.db";
             bool isFileExist = true;
