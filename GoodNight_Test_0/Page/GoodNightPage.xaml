@@ -111,8 +111,8 @@
                             <Grid>
                                 <TextBlock FontSize="26" Text="性别" Margin="5,5,5,5"></TextBlock>
                                 <ComboBox HorizontalAlignment="Right" FontSize="18" Width="55" BorderThickness="1" Margin="0,-9,0,0" VerticalContentAlignment="Bottom">
-                                    <ComboBoxItem  Content="男"></ComboBoxItem>
-                                    <ComboBoxItem Content="女" ></ComboBoxItem>
+                                    <ComboBoxItem  Content="♂" HorizontalAlignment="Center"></ComboBoxItem>
+                                    <ComboBoxItem Content="♀" HorizontalAlignment="Center"></ComboBoxItem>
                                 </ComboBox>
                             </Grid>
                         </StackPanel>

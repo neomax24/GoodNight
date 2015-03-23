@@ -131,6 +131,7 @@
     <Content Include="Assets\StoreLogo.scale-240.png" />
     <Content Include="Assets\WideLogo.scale-240.png" />
     <Content Include="ReadMe.Coding4Fun.Toolkit.txt" />
+    <Content Include="Resource\avatar_test.jpg" />
     <Content Include="Resource\MainPageBackGround.jpg" />
   </ItemGroup>
   <ItemGroup>

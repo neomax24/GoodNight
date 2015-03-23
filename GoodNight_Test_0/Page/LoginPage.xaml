@@ -8,7 +8,10 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid x:Name="LayoutRoot">
+    <Grid x:Name="LayoutRoot" >
+        <Grid.Background>
+            <SolidColorBrush Color="#04b9bf"/>
+        </Grid.Background>
 
         <Grid.ChildrenTransitions>
             <TransitionCollection>
@@ -24,16 +27,39 @@
         <!-- 标题面板 -->
         <StackPanel Grid.Row="0" Margin="19,0,0,0">
             <TextBlock Text="Good Night" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
-            <TextBlock Text="LoginPage" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
+            <TextBlock Text="请登录" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
         </StackPanel>
 
         <!--TODO: 应将内容放入以下网格-->
-        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
-            <TextBox Name="email_textbox" HorizontalAlignment="Left" Height="38" Margin="10,55,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="342"/>
-            <PasswordBox Name="password_textbox" HorizontalAlignment="Left" Margin="10,132,0,0" VerticalAlignment="Top" Width="342"/>
-            <Button Name="login_button" Click="login_button_Click" Content="Login" HorizontalAlignment="Left" Margin="10,310,0,0" VerticalAlignment="Top" Height="69"/>
-            <Button Name="weibo_login_button" Click="weibo_login_button_Click" Content="WeiBo" HorizontalAlignment="Left" Margin="190,321,0,0" VerticalAlignment="Top" Width="74"/>
-            <TextBlock Name="weibo_uid_test" HorizontalAlignment="Left" Margin="190,374,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
+        <Grid Grid.Row="1" x:Name="ContentRoot" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,0,10,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                <TextBox Name="email_textbox"  VerticalAlignment="Center" TextWrapping="Wrap" Text="邮箱地址"  />
+                <PasswordBox Name="password_textbox"   VerticalAlignment="Center"   />
+                <CheckBox x:Name="loginauto" Content="自动登陆" IsChecked="True"/>
+                <!--TODO: 微博登陆测试用 -->
+                <!--
+                    <TextBlock Name="weibo_uid_test" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Center"/>
+                -->
+                <Button Name="login_button" Click="login_button_Click" Content="确认登陆" Width="200" BorderBrush="White" HorizontalAlignment="Center"/>
+            </StackPanel>
+            <!-- 
+                <Grid Grid.Row="1" HorizontalAlignment="Stretch"> 
+                <Button Name="login_button" Click="login_button_Click" Content="登陆" Width="80" BorderBrush="White"/>
+                </Grid> 
+            -->
+            <Grid Grid.Row="2" VerticalAlignment="Bottom" Margin="0,50,0,40">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" x:Name="weibo_login_button" Click="weibo_login_button_Click" Content="微博登陆"  VerticalAlignment="Center" HorizontalAlignment="Left" />
+                <Button Grid.Column="1" Name="Registor" Content="立即注册" HorizontalAlignment="Right" />
+            </Grid>
+
         </Grid>
     </Grid>
 </Page>

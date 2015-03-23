@@ -21,6 +21,7 @@ using Windows.UI.Xaml.Media.Animation;
 using Coding4Fun;
 using Windows.UI.Notifications;
 using Windows.Data.Xml.Dom;
+using Windows.UI.Xaml.Media.Imaging;
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
 
@@ -54,8 +55,14 @@ namespace GoodNight_Test_0
         private void Initialization()
         {
             InitializationTimer();
-
+            Test_More();
             InitializationDB();
+        }
+
+        private async void Test_More()
+        {
+            BitmapImage avatar = new BitmapImage(new Uri("ms-appx:///Resource/avatar_test.jpg"));
+
         }
         private DispatcherTimer dispatcherTimer = new DispatcherTimer();
         private void InitializationTimer()

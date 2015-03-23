@@ -169,7 +169,7 @@ namespace GoodNight_Test_0
 
             var Weibo_oauthClient = new ClientOAuth();
             //测试
-            weibo_uid_test.Text = Weibo_oauthClient.Uid;
+            //weibo_uid_test.Text = Weibo_oauthClient.Uid;
             //测试wei
             // 判断是否已经授权或者授权是否过期.
             if (Weibo_oauthClient.IsAuthorized == false)
