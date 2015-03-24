@@ -20,7 +20,7 @@ namespace DemoApp
             try
             {
                 App.ChannelId = channel.Uri;
-                await App.remindsleepClient.GetPush().RegisterNativeAsync(channel.Uri);
+                await App.GoodNightService.MobileService.GetPush().RegisterNativeAsync(channel.Uri);
             }
             catch (Exception exception)
             {

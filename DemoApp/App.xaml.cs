@@ -1,4 +1,4 @@
-﻿using DemoApp.Model;
+﻿
 using Microsoft.WindowsAzure.MobileServices;
 using System;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
-
+using GoodNightService;
 
 // “空白应用程序”模板在 http://go.microsoft.com/fwlink/?LinkId=391641 上有介绍
 
@@ -29,10 +29,7 @@ namespace DemoApp
     public sealed partial class App : Application
     {
         // http://go.microsoft.com/fwlink/?LinkId=290986&clcid=0x804
-        public static Microsoft.WindowsAzure.MobileServices.MobileServiceClient remindsleepClient = new Microsoft.WindowsAzure.MobileServices.MobileServiceClient(
-        "https://remindsleep.azure-mobile.net/",
-        "ShNRPgAtPYuLEfhPSZvDtSfKmNSDug97");
-
+       
         /// <summary>
         /// Allows tracking page views, exceptions and other telemetry through the Microsoft Application Insights service.
         /// </summary>
@@ -40,13 +37,15 @@ namespace DemoApp
 
         private TransitionCollection transitions;
          //Use this constructor instead after publishing to the cloud
-         public static MobileServiceClient MobileService = new MobileServiceClient(
+        /* public static MobileServiceClient MobileService = new MobileServiceClient(
               "https://remindsleep.azure-mobile.net/",
               "ShNRPgAtPYuLEfhPSZvDtSfKmNSDug97"
         );
          public static List<Member> UserTable;
-         public static Member CurrentAccount;
+         public static List<Friend> UserFriendTable;
+         public static Member CurrentAccount;*/
          public static string ChannelId;
+        public static GoodNightServiceManager GoodNightService = GoodNightServiceManager.GetInstance();
         /// <summary>
         /// 初始化单一实例应用程序对象。    这是执行的创作代码的第一行，
         /// 逻辑上等同于 main() 或 WinMain()。
@@ -122,17 +121,12 @@ namespace DemoApp
             // 确保当前窗口处于活动状态
             Window.Current.Activate();
             //同步azure数据到本地
-            SyncTableData();
+            
             // http://go.microsoft.com/fwlink/?LinkId=290986&clcid=0x804
             DemoApp.remindsleepPush.UploadChannel();
         }
 
 
-        private async void SyncTableData()
-        {
-            if (UserTable == null)
-                UserTable = await MobileService.GetTable<Member>().ToListAsync();
-        }
         /// <summary>
         /// 启动应用程序后还原内容转换。
         /// </summary>

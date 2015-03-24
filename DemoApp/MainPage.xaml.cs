@@ -1,4 +1,4 @@
-﻿using DemoApp.Model;
+﻿
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -15,6 +15,8 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Microsoft.WindowsAzure.Storage;
+using GoodNightService.Model;
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=391641 上有介绍
 
@@ -54,36 +56,9 @@ namespace DemoApp
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void RegisterButton_Click(object sender, RoutedEventArgs e)
+        private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
-            if (UserNameTextBox.Text.Length > 0)
-            {
-                if (CheckIsExisted(UserNameTextBox.Text) != null)
-                {
-                    ShowMessage("已经存在此用户了，请直接登录");
-                }
-                else
-                {
-                    if (PasswordTextBox.Password.Length > 0)
-                    {
-                        await App.MobileService.GetTable<Member>().InsertAsync(new Member
-                        {
-                            Account = UserNameTextBox.Text,
-                            Name = "test name",
-                            Id = Guid.NewGuid().ToString(),
-                            Password = PasswordTextBox.Password,
-                            Token = App.ChannelId,
-                            ImageUrl = "test url",
-                            
-                        });
-                        ShowMessage("账户注册成功^_^");
-                    }
-                    else
-                    {
-                        ShowMessage("请输入密码");
-                    }
-                }
-            }
+            App.GoodNightService.RegisterAccount(UserNameTextBox.Text, PasswordTextBox.Password);
         }
         /// <summary>
         /// 登录
@@ -92,27 +67,7 @@ namespace DemoApp
         /// <param name="e"></param>
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            if (UserNameTextBox.Text.Length > 0 && PasswordTextBox.Password.Length > 0)
-            {
-                var user = CheckIsExisted(UserNameTextBox.Text);
-                if (user != null && user.Password == PasswordTextBox.Password)
-                {
-                    ShowMessage("登录成功");
-                    App.CurrentAccount = user;
-                }
-                else if (user != null && user.Password != PasswordTextBox.Password)
-                {
-                    ShowMessage("密码错误");
-                }
-                else
-                {
-                    ShowMessage("账户不存在，请先注册");
-                }
-            }
-            else
-            {
-                ShowMessage("请输入正确的账号密码");
-            }
+            App.GoodNightService.Login(UserNameTextBox.Text, PasswordTextBox.Password);
         }
         /// <summary>
         /// 添加好友
@@ -121,37 +76,18 @@ namespace DemoApp
         /// <param name="e"></param>
         private void AddFriendButton_Click(object sender, RoutedEventArgs e)
         {
-            if (FriendIDBox.Text.Length > 0 && CheckIsExisted(FriendIDBox.Text) != null)
-            {
-
-            }
+            App.GoodNightService.AddFriend(FriendIDBox.Text);
         }
         #endregion
+        
         /// <summary>
-        /// 检查用户是否存在
+        /// 发送推送
         /// </summary>
-        /// <returns></returns>
-        private Member CheckIsExisted(string account)
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private  void NotificationButton_Click(object sender, RoutedEventArgs e)
         {
-            return App.UserTable.Find(delegate(Member user) { return user.Account == account; });
-        }
-        private async void ShowMessage(string content)
-        {
-            MessageDialog messagebox = new MessageDialog(content, "提示");
-            await messagebox.ShowAsync();
-        }
-
-        private async void NotificationButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                await App.remindsleepClient.InvokeApiAsync("notifyAllUsers",
-                    new JObject(new JProperty("toast", "早点休息，goodnight^_^")));
-            }
-            catch
-            {
-
-            }
+            App.GoodNightService.PostNotificationAsync("早点休息，goodnight^_^", "test message");
         }
 
 

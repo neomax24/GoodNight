@@ -38,6 +38,7 @@
         </Grid>
        
         <Button x:Name="NotificationButton" Grid.Row="3" Content="推送提醒" HorizontalAlignment="Center" Click="NotificationButton_Click"/>
+        <TimePicker Grid.Row="4"/>
         <Button Grid.Row="4" Content=" 定时提醒" HorizontalAlignment="Center"/>
     </Grid>
 </Page>
