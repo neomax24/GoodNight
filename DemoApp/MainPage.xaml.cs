@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.WindowsAzure.Storage;
 using GoodNightService.Model;
+using Windows.Storage;
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=391641 上有介绍
 
@@ -58,7 +59,7 @@ namespace DemoApp
         /// <param name="e"></param>
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
-            App.GoodNightService.RegisterAccount(UserNameTextBox.Text, PasswordTextBox.Password);
+            App.GoodNightService.RegisterAccount(UserNameTextBox.Text, PasswordTextBox.Password,"test name");
         }
         /// <summary>
         /// 登录
@@ -78,17 +79,31 @@ namespace DemoApp
         {
             App.GoodNightService.AddFriend(FriendIDBox.Text);
         }
-        #endregion
-        
         /// <summary>
         /// 发送推送
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private  void NotificationButton_Click(object sender, RoutedEventArgs e)
+        private void NotificationButton_Click(object sender, RoutedEventArgs e)
         {
             App.GoodNightService.PostNotificationAsync("早点休息，goodnight^_^", "test message");
         }
+       
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var file= await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/icon175x175.png"));
+            App.GoodNightService.UploadImage(App.GoodNightService.CurrentAccount.Account, file);
+        }
+
+        private void AddAppointmentButton_Click(object sender, RoutedEventArgs e)
+        {
+            App.GoodNightService.AddPointment(AppiontmentTimePicker.Time, "提醒记录", "详细信息");
+
+        }
+        #endregion
+        
+       
+       
 
 
 

@@ -15,7 +15,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
-
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" FontSize="30" Text="GoodNight Demo"/>
 
@@ -33,12 +33,14 @@
             <Button x:Name="LoginButton" Grid.Row="2" Content="登录" HorizontalAlignment="Right"  Click="LoginButton_Click" Margin="0,6.5,57,7.333"/>
         </Grid>
         <Grid Grid.Row="2">
-            <TextBox x:Name="FriendIDBox" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,34" Width="286" PlaceholderText="请输入好友账号"/>
+            <TextBox x:Name="FriendIDBox" VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="10,24,0,26"  PlaceholderText="请输入好友账号" Width="267"/>
             <Button x:Name="AddFriendButton"  Content="添加好友" HorizontalAlignment="Right" Click="AddFriendButton_Click"/>
         </Grid>
-       
+
         <Button x:Name="NotificationButton" Grid.Row="3" Content="推送提醒" HorizontalAlignment="Center" Click="NotificationButton_Click"/>
-        <TimePicker Grid.Row="4"/>
-        <Button Grid.Row="4" Content=" 定时提醒" HorizontalAlignment="Center"/>
+        <TimePicker x:Name="AppiontmentTimePicker" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <Button x:Name="AddAppointmentButton" Grid.Row="4" Content=" 定时提醒" HorizontalAlignment="Right" Click="AddAppointmentButton_Click"/>
+        <Image Grid.Row="5" Width="90" Height="90" HorizontalAlignment="Left" Source="Assets/icon175x175.png"/>
+        <Button Grid.Row="5" Content="上传头像" HorizontalAlignment="Right" Click="Button_Click"/>
     </Grid>
 </Page>
