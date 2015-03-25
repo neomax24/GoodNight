@@ -86,7 +86,7 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <Image Height="36" Width="36"></Image>
-                                    <TextBlock Text="{Binding MemberSecond}"></TextBlock>
+                                    <TextBlock Text="{Binding Name}"></TextBlock>
                                     <Button></Button>
                                     <Button></Button>
                                 </StackPanel>
@@ -125,7 +125,23 @@
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Image Height="128" Width="128" Name="avatar_img"></Image>
                         </StackPanel>
-                        <StackPanel>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Name="declarration_show"></TextBlock>
+                        </StackPanel>
+                        <StackPanel Name="more_name_panel" Tapped="more_name_panel_Tapped">
+                            <FlyoutBase.AttachedFlyout>
+                                <Flyout Placement="Top" x:Name="name_flyout">
+                                    <StackPanel>
+                                        <TextBlock Text="昵称"></TextBlock>
+                                        <TextBox Name="more_nickName_flyout"></TextBox>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Name="more_nickName_confirm" Content="confirm" Click="more_nickName_confirm_Click"></Button>
+                                            <Button Name="more_nickName_cancel" Content="cancel" Click="more_nickName_cancel_Click"></Button>
+                                        </StackPanel>
+                                        
+                                    </StackPanel>
+                                </Flyout>
+                            </FlyoutBase.AttachedFlyout>
                             <Grid>
                                 <TextBlock FontSize="26" Text="昵称" Margin="5,5,5,5"></TextBlock>
                                 <TextBlock Name="more_nickName" FontSize="26" Text="TEST"  HorizontalAlignment="Right" VerticalAlignment="Center" ></TextBlock>

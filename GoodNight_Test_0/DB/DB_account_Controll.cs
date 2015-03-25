@@ -9,7 +9,7 @@ namespace GoodNight_Test_0
 {
     class DB_account_Controll:DB_Controller
     {
-        public async void initializate_account(DB_account data)
+        public async Task initializate_account(DB_account data)
         {
             SQLiteAsyncConnection db = GetConn();
 

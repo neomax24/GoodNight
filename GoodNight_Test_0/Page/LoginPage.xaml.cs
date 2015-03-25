@@ -207,7 +207,7 @@ namespace GoodNight_Test_0
                 ShowMessage("密码须大于6位");
                 return;
             }
-            App.GoodNightService.RegisterAccount(email_textbox.Text, hash(password_textbox.Password));
+            App.GoodNightService.RegisterAccount(email_textbox.Text, hash(password_textbox.Password),"Night"+new Random().Next(1000).ToString());
         }
         private async void ShowMessage(string content)
         {
