@@ -24,6 +24,7 @@ using Windows.Data.Xml.Dom;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.Graphics.Imaging;
 using Windows.Storage.Streams;
+using GoodNightService.Model;
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
 
@@ -64,14 +65,14 @@ namespace GoodNight_Test_0
         {
 
             StorageFolder applicationFolder = ApplicationData.Current.LocalFolder;
-            await applicationFolder.CreateFolderAsync("more", CreationCollisionOption.ReplaceExisting);
-            StorageFolder imageFolder = await applicationFolder.GetFolderAsync("more");
+            await applicationFolder.CreateFolderAsync("account", CreationCollisionOption.ReplaceExisting);
+            StorageFolder imageFolder = await applicationFolder.GetFolderAsync("account");
             await imageFolder.CreateFileAsync("avatar.jpg", CreationCollisionOption.ReplaceExisting);
             StorageFile imageFile = await imageFolder.GetFileAsync("avatar.jpg");
             StorageFile inFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Resource/avatar_test.jpg"));
             await inFile.CopyAndReplaceAsync(imageFile);
-            DB_More_Controll moreControll = new DB_More_Controll();
-            DB_More more =await moreControll.get_more();
+            DB_account_Controll moreControll = new DB_account_Controll();
+            DB_account more =await moreControll.get_account();
             more_nickName.Text = more.nickName;
             more_sex.SelectedIndex = more.sex;
             avatar_img.Source = new BitmapImage(new Uri(applicationFolder.Path + more.avatarPath));
@@ -115,6 +116,17 @@ namespace GoodNight_Test_0
                     break;
                 }
             }
+            DB_account_Controll db_account = new DB_account_Controll();
+            GoodNightService.Model.Member account_temp=App.GoodNightService.CurrentAccount;
+
+            db_account.initializate_account(
+                new DB_account
+                {
+                    userID=account_temp.Id,
+                    declaration=account_temp.Description,
+                    nickName=account_temp.Name,
+                    Token=account_temp.Token
+                });
             Test_More();
         }
 
@@ -245,7 +257,7 @@ namespace GoodNight_Test_0
             {
                 ((ToggleButton)sender).IsChecked = false;
                 Coding4Fun.Toolkit.Controls.ToastPrompt toast = new Coding4Fun.Toolkit.Controls.ToastPrompt();
-                toast.Message = "一心不可二用poi";
+                toast.Message = "一心不可二用——教练";
                 toast.Show();
             }
         }
@@ -380,11 +392,6 @@ namespace GoodNight_Test_0
             return false;
         }
 
-        private void more_declaration_panel_PointerPressed(object sender, PointerRoutedEventArgs e)
-        {
-            StackPanel stack = sender as StackPanel;
-            FlyoutBase.ShowAttachedFlyout(stack);
-        }
 
         private void more_declaration_cancel_Click(object sender, RoutedEventArgs e)
         {
@@ -394,6 +401,18 @@ namespace GoodNight_Test_0
         private void more_declaration_confirm_Click(object sender, RoutedEventArgs e)
         {
             //TODO
+        }
+
+        private void more_declaration_panel_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            StackPanel stack = sender as StackPanel;
+            FlyoutBase.ShowAttachedFlyout(stack);
+        }
+
+        private void friend_add_button_Click(object sender, RoutedEventArgs e)
+        {
+            App.GoodNightService.AddFriend(friend_add_text.Text);
+            Friend_list.ItemsSource = App.GoodNightService.UserFriendTable;
         }
 
     }

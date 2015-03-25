@@ -57,7 +57,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" x:Name="weibo_login_button" Click="weibo_login_button_Click" Content="微博登陆"  VerticalAlignment="Center" HorizontalAlignment="Left" />
-                <Button Grid.Column="1" Name="Registor" Content="立即注册" HorizontalAlignment="Right" />
+                <Button Grid.Column="1" Name="Registor" Content="立即注册" HorizontalAlignment="Right" Click="Registor_Click" />
             </Grid>
 
         </Grid>

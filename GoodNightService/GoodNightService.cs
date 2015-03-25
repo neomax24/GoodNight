@@ -59,6 +59,7 @@ namespace GoodNightService
 
                         });
                         ShowMessage("账户注册成功^_^");
+                        SyncServiceData();
                     }
                     else
                     {
@@ -82,15 +83,18 @@ namespace GoodNightService
                 else if (user != null && user.Password != password)
                 {
                     ShowMessage("密码错误");
+                    CurrentAccount = null;
                 }
                 else
                 {
                     ShowMessage("账户不存在，请先注册");
+                    CurrentAccount = null;
                 }
             }
             else
             {
                 ShowMessage("请输入正确的账号密码");
+                CurrentAccount = null;
             }
         }
 
@@ -119,7 +123,7 @@ namespace GoodNightService
             }
             else
             {
-                ShowMessage("请输入正确的用户ID");
+                ShowMessage("请输入正确的用户账户");
             }
         }
         public MobileServiceClient MobileService { get; set; }
@@ -171,7 +175,6 @@ namespace GoodNightService
         {
             try
             {
-
                 await MobileService.InvokeApiAsync("notifyAllUsers",
                     new JObject(new JProperty("toast", title), new JProperty("content", content)));
             }
