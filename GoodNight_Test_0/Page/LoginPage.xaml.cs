@@ -129,24 +129,14 @@ namespace GoodNight_Test_0
                 ShowMessage("密码须大于6位");
                 return;
             }
-            try
+            string password_hash = hash(password_textbox.Password);
+            App.GoodNightService.Login(email_textbox.Text, password_hash);
+            if (App.GoodNightService.CurrentAccount != null)
             {
-                string password_hash = hash(password_textbox.Password);
-
-                App.GoodNightService.Login(email_textbox.Text, password_hash);
-                if (App.GoodNightService.CurrentAccount != null)
-                {
-            Frame frame = Window.Current.Content as Frame;
-            frame.Navigate(typeof(GoodNightPage));
-        }
-            }
-            catch (NullReferenceException)
-            {
-                 ShowMessage("啊哦，请稍等重试");
+                Frame frame = Window.Current.Content as Frame;
+                frame.Navigate(typeof(GoodNightPage));
             }
         }
-        
- 
         private string hash(string data)
         {
             HashAlgorithmProvider hash = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Sha256);

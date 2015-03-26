@@ -15,7 +15,7 @@ using System.IO;
 using Windows.Storage;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
-using System.Threading.Tasks;
+
 
 namespace GoodNightService
 {
@@ -128,15 +128,15 @@ namespace GoodNightService
         /// 添加朋友
         /// </summary>
         /// <param name="friendId">朋友ID</param>
-        public async Task AddFriend( string friendId)
+        public async void AddFriend( string friendId)
         {
             UserFriendTable = await MobileService.GetTable<Friend>().ToListAsync();
           //  UserTable = await MobileService.GetTable<Member>().ToListAsync();
             var member = CheckIsExisted(friendId);
             if (friendId.Length > 0 && member != null)
             {
-                Friend friend = CheckIsFriend(member.Id);
-                if (friend == null)
+                var friend = CheckIsFriend(member.Id);
+                if (friend != null)
                 {
                     await MobileService.GetTable<Friend>().InsertAsync(new Friend
                     {
@@ -179,8 +179,7 @@ namespace GoodNightService
         /// <returns></returns>
         private Friend CheckIsFriend(string id)
         {
-            Friend friend = null;
-            friend = UserFriendTable.Find(delegate(Friend fr)
+            Friend friend = UserFriendTable.Find(delegate(Friend fr)
             {
                 return (fr.MemberFirst == CurrentAccount.Id && fr.MemberSecond == id) || (fr.MemberSecond == CurrentAccount.Id && fr.MemberFirst == id);
             });
