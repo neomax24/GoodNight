@@ -11,11 +11,20 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <Grid.Background>
+            <SolidColorBrush Color="#04b9bf"/>
+        </Grid.Background> 
         <Pivot Title="晚安">
             <PivotItem Header="晚安自己" Margin="10,0,10,5">
                 <Grid>
-                    <ScrollViewer Margin="0,0,0,104">
-                        <StackPanel Height="381">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Visible" >
+                        <StackPanel>
+                            <TextBlock Text="早睡计划" FontSize="28" HorizontalAlignment="Left"/>
                             <ListView x:Name="time_points_list">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
@@ -32,7 +41,7 @@
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
-
+                            <TextBlock Text="帮我计时" FontSize="28" HorizontalAlignment="Left"/>
                             <ListView x:Name="time_Period_list" SelectionMode="Extended">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
@@ -56,21 +65,18 @@
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
-                            <Button Content="添加" Height="78" Width="273">
-                                <Button.Flyout>
-                                    <MenuFlyout>
-                                        <MenuFlyoutItem Name="timePoint_add_flyout" Text="添加时间点" Click="timePoint_add_flyout_Click"></MenuFlyoutItem>
-                                        <MenuFlyoutSeparator/>
-                                        <MenuFlyoutItem Name="timeProid_add_flyout" Text="添加时间段" Click="timeProid_add_flyout_Click"></MenuFlyoutItem>
-                                    </MenuFlyout>
-                                </Button.Flyout>
-                            </Button>
                         </StackPanel>
                     </ScrollViewer>
-                    <Button Margin="159,418,0,0" Padding="0,-5,0,0" Height="78" Width="64" MinWidth="50" MinHeight="50" HorizontalAlignment="Left">
-                        <TextBlock Text="Speak" FontSize="20" >
-                        </TextBlock>
+                    <Button Grid.Row="1" HorizontalAlignment="Center" Content="添加" Width="273" VerticalContentAlignment="Center">
+                        <Button.Flyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Name="timePoint_add_flyout" Text="早睡计划" Click="timePoint_add_flyout_Click"></MenuFlyoutItem>
+                                <MenuFlyoutSeparator/>
+                                <MenuFlyoutItem Name="timeProid_add_flyout" Text="帮我计时" Click="timeProid_add_flyout_Click"></MenuFlyoutItem>
+                            </MenuFlyout>
+                        </Button.Flyout>
                     </Button>
+                    <Image Grid.Row="2" Source="/Assets/speaker.png" Stretch="Uniform" Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Center" />                   
                 </Grid>
             </PivotItem>
             <PivotItem Header="晚安朋友">
@@ -116,15 +122,15 @@
                                 </ComboBox>
                             </Grid>
                         </StackPanel>
-                        <StackPanel Name="more_declaration_panel" PointerPressed="more_declaration_panel_PointerPressed">
+                        <StackPanel Name="more_declaration_panel" Tapped="more_declaration_panel_Tapped">
                             <FlyoutBase.AttachedFlyout>
                                 <Flyout Placement="Full" x:Name="declaration_flyout">
                                     <StackPanel VerticalAlignment="Center" Margin="20,10,20,10">
                                         <TextBlock Text="我的早睡宣言" FontSize="26"></TextBlock>
                                         <TextBox Name="more_declaration"></TextBox>
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                            <Button Name="more_declaration_confirm" Click="more_declaration_confirm_Click" Margin="0,0,20,0"></Button>
-                                            <Button Name="more_declaration_cancel" Click="more_declaration_cancel_Click" Margin="20,0,0,0"></Button>
+                                            <Button Content="确认"  Name="more_declaration_confirm" Click="more_declaration_confirm_Click" Margin="0,0,20,0"></Button>
+                                            <Button Content="取消" Name="more_declaration_cancel" Click="more_declaration_cancel_Click" Margin="20,0,0,0"></Button>
                                         </StackPanel>
                                     </StackPanel>
                                 </Flyout>

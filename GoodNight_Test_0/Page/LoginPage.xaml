@@ -37,7 +37,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Top">
-                <TextBox Name="email_textbox"  VerticalAlignment="Center" TextWrapping="Wrap" Text="邮箱地址"  />
+                <TextBox Name="email_textbox"  VerticalAlignment="Center" TextWrapping="Wrap" Text="Admin@admin.com"  />
                 <PasswordBox Name="password_textbox"   VerticalAlignment="Center"   />
                 <CheckBox x:Name="loginauto" Content="自动登陆" IsChecked="True"/>
                 <!--TODO: 微博登陆测试用 -->
@@ -57,7 +57,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" x:Name="weibo_login_button" Click="weibo_login_button_Click" Content="微博登陆"  VerticalAlignment="Center" HorizontalAlignment="Left" />
-                <Button Grid.Column="1" Name="Registor" Content="立即注册" HorizontalAlignment="Right" />
+                <Button Grid.Column="1" Name="Registor" Content="立即注册" HorizontalAlignment="Right" Click="Registor_Click" />
             </Grid>
 
         </Grid>

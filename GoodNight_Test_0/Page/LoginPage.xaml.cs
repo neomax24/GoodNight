@@ -21,6 +21,8 @@ using System.Threading.Tasks;
 using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
 using System.Text.RegularExpressions;
+using GoodNightService.Model;
+using Windows.UI.Popups;
 
 // “基本页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
 
@@ -117,22 +119,41 @@ namespace GoodNight_Test_0
         private void login_button_Click(object sender, RoutedEventArgs e)
         {
             //Todo
-            if(!isEmailLegal(email_textbox.Text))
+            if (!isEmailLegal(email_textbox.Text))
             {
-             //   return;
+                ShowMessage("请输入正确的电子邮箱");
+                return;
             }
-            if(!isPasswordLegal(password_textbox.Password))
+            if (!isPasswordLegal(password_textbox.Password))
             {
-            //    return;
+                ShowMessage("密码须大于6位");
+                return;
             }
+            try
+            {
+                string password_hash = hash(password_textbox.Password);
 
-            HashAlgorithmProvider hash = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Sha256);
-            Windows.Storage.Streams.IBuffer hash_result = hash.HashData(CryptographicBuffer.ConvertStringToBinary(password_textbox.Password, BinaryStringEncoding.Utf8));
-            string password_result = CryptographicBuffer.EncodeToHexString(hash_result);
-            Frame frame = Window.Current.Content as Frame;
-            frame.Navigate(typeof(GoodNightPage));
+                App.GoodNightService.Login(email_textbox.Text, password_hash);
+                if (App.GoodNightService.CurrentAccount != null)
+                {
+                    Frame frame = Window.Current.Content as Frame;
+                    frame.Navigate(typeof(GoodNightPage));
+                }
+            }
+            catch (NullReferenceException)
+            {
+                 ShowMessage("啊哦，请稍等重试");
+            }
         }
-
+        
+ 
+        private string hash(string data)
+        {
+            HashAlgorithmProvider hash = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Sha256);
+            Windows.Storage.Streams.IBuffer hash_result = hash.HashData(CryptographicBuffer.ConvertStringToBinary(data, BinaryStringEncoding.Utf8));
+            string result = CryptographicBuffer.EncodeToHexString(hash_result);
+            return result;
+        }
         private bool isEmailLegal(string p)
         {
             string expression = @"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$";
@@ -184,5 +205,24 @@ namespace GoodNight_Test_0
             }
         }
 
+        private void Registor_Click(object sender, RoutedEventArgs e)
+        {
+            if (!isEmailLegal(email_textbox.Text))
+            {
+                ShowMessage("请输入正确的电子邮箱");
+                return;
+            }
+            if (!isPasswordLegal(password_textbox.Password))
+            {
+                ShowMessage("密码须大于6位");
+                return;
+            }
+            App.GoodNightService.RegisterAccount(email_textbox.Text, hash(password_textbox.Password));
+        }
+        private async void ShowMessage(string content)
+        {
+            MessageDialog messagebox = new MessageDialog(content, "提示");
+            await messagebox.ShowAsync();
+        }
     }
 }

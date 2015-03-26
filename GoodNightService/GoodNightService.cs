@@ -59,6 +59,7 @@ namespace GoodNightService
 
                         });
                         ShowMessage("账户注册成功^_^");
+                        SyncServiceData();
                     }
                     else
                     {
@@ -82,15 +83,18 @@ namespace GoodNightService
                 else if (user != null && user.Password != password)
                 {
                     ShowMessage("密码错误");
+                    CurrentAccount = null;
                 }
                 else
                 {
                     ShowMessage("账户不存在，请先注册");
+                    CurrentAccount = null;
                 }
             }
             else
             {
                 ShowMessage("请输入正确的账号密码");
+                CurrentAccount = null;
             }
         }
 

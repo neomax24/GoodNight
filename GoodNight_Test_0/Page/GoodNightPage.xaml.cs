@@ -70,8 +70,8 @@ namespace GoodNight_Test_0
             StorageFile imageFile = await imageFolder.GetFileAsync("avatar.jpg");
             StorageFile inFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Resource/avatar_test.jpg"));
             await inFile.CopyAndReplaceAsync(imageFile);
-            DB_More_Controll moreControll = new DB_More_Controll();
-            DB_More more =await moreControll.get_more();
+            DB_account_Controll moreControll = new DB_account_Controll();
+            DB_account more =await moreControll.get_account();
             more_nickName.Text = more.nickName;
             more_sex.SelectedIndex = more.sex;
             avatar_img.Source = new BitmapImage(new Uri(applicationFolder.Path + more.avatarPath));
@@ -115,6 +115,17 @@ namespace GoodNight_Test_0
                     break;
                 }
             }
+            DB_account_Controll db_account = new DB_account_Controll();
+            GoodNightService.Model.Member account_temp=App.GoodNightService.CurrentAccount;
+
+            db_account.initializate_account(
+                new DB_account
+                {
+                    userID=account_temp.Id,
+                    declaration=account_temp.Description,
+                    nickName=account_temp.Name,
+                    Token=account_temp.Token
+                });
             Test_More();
         }
 
@@ -380,11 +391,6 @@ namespace GoodNight_Test_0
             return false;
         }
 
-        private void more_declaration_panel_PointerPressed(object sender, PointerRoutedEventArgs e)
-        {
-            StackPanel stack = sender as StackPanel;
-            FlyoutBase.ShowAttachedFlyout(stack);
-        }
 
         private void more_declaration_cancel_Click(object sender, RoutedEventArgs e)
         {
@@ -394,6 +400,12 @@ namespace GoodNight_Test_0
         private void more_declaration_confirm_Click(object sender, RoutedEventArgs e)
         {
             //TODO
+        }
+
+        private void more_declaration_panel_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            StackPanel stack = sender as StackPanel;
+            FlyoutBase.ShowAttachedFlyout(stack);
         }
 
     }
