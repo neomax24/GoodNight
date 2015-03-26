@@ -20,7 +20,8 @@ namespace DemoApp
             try
             {
                 App.ChannelId = channel.Uri;
-                await App.GoodNightService.MobileService.GetPush().RegisterNativeAsync(channel.Uri);
+				var tags = new [] { App.GoodNightService.CurrentAccount.Id };
+                await App.GoodNightService.MobileService.GetPush().RegisterNativeAsync(channel.Uri,tags);
             }
             catch (Exception exception)
             {

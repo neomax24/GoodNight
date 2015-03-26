@@ -1,15 +1,15 @@
-﻿
+﻿using Microsoft.WindowsAzure.Mobile.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 
-
-namespace DemoApp.Model
+namespace remindsleepService.DataObjects
 {
-    public class Member
+    public class Member : EntityData
     {
-
-        public string Id { get; set; }
+        
+  
         /// <summary>
         /// 用户名
         /// </summary>
@@ -33,5 +33,6 @@ namespace DemoApp.Model
         /// </summary>
         public string Description { get; set; }
         public string Password { get; set; }
+
     }
 }

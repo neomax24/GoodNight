@@ -121,7 +121,8 @@ namespace DemoApp
             // 确保当前窗口处于活动状态
             Window.Current.Activate();
             //同步azure数据到本地
-            
+            //请在注册或者登陆完成后调用推送服务注册方法
+			//此处调用可能有未知影响，请测试一下
             // http://go.microsoft.com/fwlink/?LinkId=290986&clcid=0x804
             DemoApp.remindsleepPush.UploadChannel();
         }
