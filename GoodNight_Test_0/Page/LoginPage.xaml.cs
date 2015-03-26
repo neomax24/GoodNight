@@ -129,14 +129,24 @@ namespace GoodNight_Test_0
                 ShowMessage("密码须大于6位");
                 return;
             }
-            string password_hash = hash(password_textbox.Password);
-            App.GoodNightService.Login(email_textbox.Text, password_hash);
-            if (App.GoodNightService.CurrentAccount != null)
+            try
             {
-                Frame frame = Window.Current.Content as Frame;
-                frame.Navigate(typeof(GoodNightPage));
+                string password_hash = hash(password_textbox.Password);
+
+                App.GoodNightService.Login(email_textbox.Text, password_hash);
+                if (App.GoodNightService.CurrentAccount != null)
+                {
+            Frame frame = Window.Current.Content as Frame;
+            frame.Navigate(typeof(GoodNightPage));
+        }
+            }
+            catch (NullReferenceException)
+            {
+                 ShowMessage("啊哦，请稍等重试");
             }
         }
+        
+ 
         private string hash(string data)
         {
             HashAlgorithmProvider hash = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Sha256);
@@ -207,7 +217,7 @@ namespace GoodNight_Test_0
                 ShowMessage("密码须大于6位");
                 return;
             }
-            App.GoodNightService.RegisterAccount(email_textbox.Text, hash(password_textbox.Password),"Night"+new Random().Next(1000).ToString());
+            App.GoodNightService.RegisterAccount(email_textbox.Text, hash(password_textbox.Password));
         }
         private async void ShowMessage(string content)
         {
