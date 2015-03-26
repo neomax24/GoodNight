@@ -104,9 +104,6 @@
     <Compile Include="Page\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Page\MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DB\SQLite.cs" />
     <Compile Include="DB\SQLiteAsync.cs" />
@@ -148,10 +145,6 @@
     <Page Include="Page\LoginPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Page\MainPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Page\timePeroid_addPage.xaml">
       <SubType>Designer</SubType>

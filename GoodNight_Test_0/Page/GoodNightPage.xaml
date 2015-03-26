@@ -17,9 +17,15 @@
         <Pivot Title="晚安">
             <PivotItem Header="晚安自己" Margin="10,0,10,5">
                 <Grid>
-                    <StackPanel ScrollViewer.VerticalScrollMode="Enabled" Margin="0,0,0,73">
-                        <TextBlock Text="早睡计划" FontSize="26"></TextBlock>
-                        <ListView x:Name="time_points_list" ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.HorizontalScrollMode="Disabled">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="4*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Visible" >
+                    <StackPanel>
+                        <TextBlock Text="早睡计划" FontSize="28" HorizontalAlignment="Left"/>
+                        <ListView x:Name="time_points_list">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" Name="timePoint_stackPanel" Holding="timePoint_stackPanel_Holding">
@@ -35,8 +41,8 @@
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
-                        <TextBlock Text="帮我计时" FontSize="26"></TextBlock>
-                        <ListView x:Name="time_Period_list" SelectionMode="Extended" ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.HorizontalScrollMode="Disabled">
+                        <TextBlock Text="帮我计时" FontSize="28" HorizontalAlignment="Left"/>
+                        <ListView x:Name="time_Period_list" SelectionMode="Extended">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel>
@@ -59,26 +65,20 @@
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
-
-                        <StackPanel>
-                            <Button HorizontalAlignment="Center" Content="添加" Height="78" Width="273">
-                                <Button.Flyout>
-                                    <MenuFlyout>
-                                        <MenuFlyoutItem Name="timePoint_add_flyout" Text="添加时间点" Click="timePoint_add_flyout_Click"></MenuFlyoutItem>
-                                        <MenuFlyoutSeparator/>
-                                        <MenuFlyoutItem Name="timeProid_add_flyout" Text="添加时间段" Click="timeProid_add_flyout_Click"></MenuFlyoutItem>
-                                    </MenuFlyout>
-                                </Button.Flyout>
-                            </Button>
-                        </StackPanel>
                     </StackPanel>
-
-                    <Button Margin="159,418,0,0" Padding="0,-5,0,0" Height="78" Width="64" MinWidth="50" MinHeight="50" HorizontalAlignment="Left">
-                        <TextBlock Text="Speak" FontSize="20" >
-                        </TextBlock>
-                    </Button>
-                </Grid>
-            </PivotItem>
+                </ScrollViewer>
+                <Button Grid.Row="1" HorizontalAlignment="Center" Content="添加" Width="273" VerticalContentAlignment="Center">
+                    <Button.Flyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem Name="timePoint_add_flyout" Text="早睡计划" Click="timePoint_add_flyout_Click"></MenuFlyoutItem>
+                            <MenuFlyoutSeparator/>
+                            <MenuFlyoutItem Name="timeProid_add_flyout" Text="帮我计时" Click="timeProid_add_flyout_Click"></MenuFlyoutItem>
+                        </MenuFlyout>
+                    </Button.Flyout>
+                </Button>
+                <Image Grid.Row="2" Source="/Assets/speaker.png" Stretch="Uniform" Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Center" />
+    </Grid>
+    </PivotItem>
             <PivotItem Header="晚安朋友">
                 <Grid >
                     <ListView Name="Friend_list" Margin="0,10,0,60">
