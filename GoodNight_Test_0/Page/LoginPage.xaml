@@ -37,7 +37,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Top">
-                <TextBox Name="email_textbox"  VerticalAlignment="Center" TextWrapping="Wrap" Text="Admin@admin.com"  />
+                <TextBox Name="email_textbox"  VerticalAlignment="Center" TextWrapping="Wrap" Text="邮箱地址"  />
                 <PasswordBox Name="password_textbox"   VerticalAlignment="Center"   />
                 <CheckBox x:Name="loginauto" Content="自动登陆" IsChecked="True"/>
                 <!--TODO: 微博登陆测试用 -->
