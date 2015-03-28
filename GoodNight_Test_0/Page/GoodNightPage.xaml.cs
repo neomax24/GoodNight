@@ -25,6 +25,9 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.Graphics.Imaging;
 using Windows.Storage.Streams;
 using GoodNightService.Model;
+using Windows.Storage.Pickers;
+using Windows.Web.Http;
+using Microsoft.WindowsAzure;
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
 
@@ -38,6 +41,9 @@ namespace GoodNight_Test_0
 
         private List<DB_TimePeriodList> timePeriodListData=new List<DB_TimePeriodList>();
         private List<DB_TimePointList> timePointListData=new List<DB_TimePointList>();
+
+        FileOpenPicker imgpicker = new FileOpenPicker();
+
 
         public GoodNightPage()
         {
@@ -57,29 +63,29 @@ namespace GoodNight_Test_0
 
         private void Initialization()
         {
+            InitializationImgPicker();
             InitializationTimer();
             InitializationDB();
-            reflesh_friendList();
         }
 
-        private async void Test_More()
+        private void InitializationImgPicker()
         {
+            imgpicker.FileTypeFilter.Add(".jpg");
+            imgpicker.FileTypeFilter.Add(".png");
+            imgpicker.ContinuationData["Operation"] = "Image";
+        }
 
-            StorageFolder applicationFolder = ApplicationData.Current.LocalFolder;
-            await applicationFolder.CreateFolderAsync("account", CreationCollisionOption.ReplaceExisting);
-            StorageFolder imageFolder = await applicationFolder.GetFolderAsync("account");
-            await imageFolder.CreateFileAsync("avatar.jpg", CreationCollisionOption.ReplaceExisting);
-            StorageFile imageFile = await imageFolder.GetFileAsync("avatar.jpg");
-            StorageFile inFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Resource/avatar_test.jpg"));
-            await inFile.CopyAndReplaceAsync(imageFile);
-            updateAndReflesh_CurrentAccount();
+        private async Task Test_More()
+        {
+            await updateAndReflesh_CurrentAccount();
         }
 
 
         private DispatcherTimer dispatcherTimer = new DispatcherTimer();
-        //初始化计时器
         private void InitializationTimer()
         {
+
+            
             dispatcherTimer.Tick += dispatcherTimer_Tick;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 2);
 
@@ -122,7 +128,8 @@ namespace GoodNight_Test_0
                     nickName=account_temp.Name,
                     Token=account_temp.Token
                 });
-            Test_More();
+            await Test_More();
+            await reflesh_friendList();
         }
 
         private void TextBlock_SelectionChanged(object sender, RoutedEventArgs e)
@@ -135,7 +142,7 @@ namespace GoodNight_Test_0
 
         }
 
-        //微博退出登录？？？
+
         private void logout_test_Button_Click(object sender, RoutedEventArgs e)
         {
             var Weibo_oauthClient = new ClientOAuth();
@@ -144,31 +151,24 @@ namespace GoodNight_Test_0
             frame = Window.Current.Content as Frame;
             frame.Navigate(typeof(LoginPage));
         }
-        
-        //晚安自己，添加“早睡计划”按钮响应
+
+        private void add_Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private void timePoint_add_flyout_Click(object sender, RoutedEventArgs e)
         {
             Frame frame = Window.Current.Content as Frame;
             frame.Navigate(typeof(timePointList_addPage));
         }
-        //添加“帮我计时”按钮相应
+
         private void timeProid_add_flyout_Click(object sender, RoutedEventArgs e)
         {
             Frame frame = Window.Current.Content as Frame;
             frame.Navigate(typeof(timePeriod_addPage));
         }
-        //删除“早睡计划”条目
-        private async void timePoint_delete_Click(object sender, RoutedEventArgs e)
-        {
-            DB_TimePointList selectedTimePoint = ((MenuFlyoutItem)sender).DataContext as DB_TimePointList;
-            DB_Controller DB = new DB_Controller();
-            DB.delete_TimePointList(selectedTimePoint);
-            await DB.reflesh_timePoint();
-            timePointListData = DB.get_timePointList;
-            time_points_list.ItemsSource = timePointListData;
-        }
 
-        //删除“帮我计时”条目
         private async void timePeriod_delete_Click(object sender, RoutedEventArgs e)
         {
             DB_TimePeriodList selectedTimePeriod = ((MenuFlyoutItem)sender).DataContext as DB_TimePeriodList;
@@ -178,7 +178,7 @@ namespace GoodNight_Test_0
             timePeriodListData = DB.get_timePeriodList;
             time_Period_list.ItemsSource = timePeriodListData;
         }
-        //响应点击其余区域，“帮我计时”
+
         private void timePeriod_stackPanel_Holding(object sender, HoldingRoutedEventArgs e)
         {
             StackPanel stackPanel = sender as StackPanel;
@@ -187,7 +187,7 @@ namespace GoodNight_Test_0
                 FlyoutBase.ShowAttachedFlyout(stackPanel);
             }
         }
-        //响应点击其余区域，“早睡计划”
+
         private void timePoint_stackPanel_Holding(object sender, HoldingRoutedEventArgs e)
         {
             StackPanel stackPanel = sender as StackPanel;
@@ -196,7 +196,16 @@ namespace GoodNight_Test_0
                 FlyoutBase.ShowAttachedFlyout(stackPanel);
             }
         }
-        //“帮我计时”，启动响应
+
+        private async void timePoint_delete_Click(object sender, RoutedEventArgs e)
+        {
+            DB_TimePointList selectedTimePoint = ((MenuFlyoutItem)sender).DataContext as DB_TimePointList;
+            DB_Controller DB = new DB_Controller();
+            DB.delete_TimePointList(selectedTimePoint);
+            await DB.reflesh_timePoint();
+            timePointListData = DB.get_timePointList;
+            time_points_list.ItemsSource = timePointListData;
+        }
         private async void timePeriod_IsWork_Click(object sender, RoutedEventArgs e)
         {
             DB_TimePeriodList selectedTimePeriod = ((Coding4Fun.Toolkit.Controls.OpacityToggleButton)sender).DataContext as DB_TimePeriodList;
@@ -250,7 +259,7 @@ namespace GoodNight_Test_0
             {
                 ((ToggleButton)sender).IsChecked = false;
                 Coding4Fun.Toolkit.Controls.ToastPrompt toast = new Coding4Fun.Toolkit.Controls.ToastPrompt();
-                toast.Message = "一心不可二用噢亲";
+                toast.Message = "一心不可二用——教练";
                 toast.Show();
             }
         }
@@ -268,7 +277,6 @@ namespace GoodNight_Test_0
         }
 
         private DB_TimePeriodList Period_picker_tamp = new DB_TimePeriodList();
-        //"帮我计时"，选择时间 按钮响应
         private void Period_picker_button_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
@@ -279,7 +287,7 @@ namespace GoodNight_Test_0
                 FlyoutBase.ShowAttachedFlyout(button);
             }
         }
-        //“早睡计划”，选择时间 按钮响应
+
         private async void Period_pickerFlyout_TimePicked(TimePickerFlyout sender, TimePickedEventArgs args)
         {
             if (Convert.ToInt32(sender.Time.TotalMinutes) != 0)
@@ -314,7 +322,7 @@ namespace GoodNight_Test_0
                 }
             }
         }
-        //“早睡计划”，复选框响应
+
         private async void timePoint_check_Click(object sender, RoutedEventArgs e)
         { 
 
@@ -371,7 +379,7 @@ namespace GoodNight_Test_0
                 }
             }
         }
-        //“早睡计划”，检查选择的时间是否过期
+
         private bool isTimePassed(TimeSpan timeSpan)
         {
             DateTime now = DateTime.Now;
@@ -385,53 +393,13 @@ namespace GoodNight_Test_0
             }
             return false;
         }
-        //晚安自己，话筒按钮响应
-        private void Goodnight_Speaker_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            Frame frame = Window.Current.Content as Frame;
-            frame.Navigate(typeof(SpeakPage));
-        }
-        //晚安朋友，添加好友按钮响应
-        private void friend_add_button_Click(object sender, RoutedEventArgs e)
-        {
-            add_friend_controll();
-        }
-        //晚安朋友，调用api
-        private async void add_friend_controll()
-        {
-            await App.GoodNightService.AddFriend(friend_add_text.Text);
-            reflesh_friendList();
-        }
-        //晚安朋友，更新数据库存储
-        private void reflesh_friendList()
-        {
-            List<Member> friend_list_tamp = new List<Member>();
-            foreach (Friend s in App.GoodNightService.UserFriendTable)
-            {
-                if (s.MemberFirst == App.GoodNightService.CurrentAccount.Id)
-                {
-                    friend_list_tamp.Add(App.GoodNightService.UserTable.Find(delegate(Member _member) { return _member.Id == s.MemberSecond; }));
-                }
-                if (s.MemberSecond == App.GoodNightService.CurrentAccount.Id)
-                {
-                    friend_list_tamp.Add(App.GoodNightService.UserTable.Find(delegate(Member _menber) { return _menber.Id == s.MemberFirst; }));
-                }
-            }
-            Friend_list.ItemsSource = friend_list_tamp;
-        }
 
-        //晚安朋友，寻找我的睡友，添加按钮响应
-        private void add_Button_Click(object sender, RoutedEventArgs e)
-        {
 
-        }
-
-        //更多，“我的宣言”，更改后，取消按钮响应
         private void more_declaration_cancel_Click(object sender, RoutedEventArgs e)
         {
             declaration_flyout.Hide();
         }
-        //更多，“我的宣言”，更改后，确认按钮响应
+
         private void more_declaration_confirm_Click(object sender, RoutedEventArgs e)
         {
             //TODO
@@ -439,8 +407,8 @@ namespace GoodNight_Test_0
             updateAndReflesh_CurrentAccount();
             declaration_flyout.Hide();
         }
-        //更多，更新界面，更新数据库
-        private async void updateAndReflesh_CurrentAccount()
+
+        private async Task updateAndReflesh_CurrentAccount()
         {
             await App.GoodNightService.MobileService.GetTable<Member>().UpdateAsync(App.GoodNightService.CurrentAccount);
             
@@ -454,7 +422,8 @@ namespace GoodNight_Test_0
                     userID = account_temp.Id,
                     declaration = account_temp.Description,
                     nickName = account_temp.Name,
-                    Token = account_temp.Token
+                    Token = account_temp.Token,
+                    avatarPath = "avatar_" + App.GoodNightService.CurrentAccount.Id +"_"+App.GoodNightService.CurrentAccount.ImageUrl.GetHashCode()+".png",
                 });
             DB_account_Controll moreControll = new DB_account_Controll();
             DB_account more = await moreControll.get_account();
@@ -462,34 +431,155 @@ namespace GoodNight_Test_0
             more_nickName_flyout.Text = more.nickName;
             more_sex.SelectedIndex = more.sex;
             declarration_show.Text = more.declaration;
-            avatar_img.Source = new BitmapImage(new Uri(applicationFolder.Path + more.avatarPath));
+
+            StorageFile avatarFile = await DownloadImgToFile(await applicationFolder.CreateFolderAsync("account", CreationCollisionOption.OpenIfExists), more.avatarPath, App.GoodNightService.CurrentAccount.ImageUrl);
+            BitmapImage bitmap_avatar = new BitmapImage();
+            bitmap_avatar.SetSource(await avatarFile.OpenAsync(FileAccessMode.Read));
+            avatar_img.Source = bitmap_avatar;
             more_declaration.Text = more.declaration;
         }
-        //更多，修改早睡宣言
+        private async Task<StorageFile> DownloadImgToFile(StorageFolder Folder,string fileName,string uri)
+        {
+            bool isExists = false;
+            try
+            {
+                StorageFile file = await Folder.CreateFileAsync(fileName, CreationCollisionOption.FailIfExists);
+            }
+            catch
+            {
+                isExists = true;
+            }
+            if (isExists != true)
+            {
+                Stream stream = await UriToStream(new Uri(uri));
+                StorageFile file = await Folder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+                using (IRandomAccessStream output = await file.OpenAsync(FileAccessMode.ReadWrite))
+                {
+                    Stream outputstream = WindowsRuntimeStreamExtensions.AsStreamForWrite(output.GetOutputStreamAt(0));
+                    await stream.CopyToAsync(outputstream);
+                    outputstream.Dispose();
+                    stream.Dispose();
+                }
+                return file;
+            }
+            else
+            {
+                return await Folder.GetFileAsync(fileName);
+            }
+        }
+
+        private async Task<Stream> UriToStream(Uri uri)
+        {
+            var rass = RandomAccessStreamReference.CreateFromUri(uri);
+            IRandomAccessStream inputStream = await rass.OpenReadAsync();
+            Stream input = WindowsRuntimeStreamExtensions.AsStreamForRead(inputStream.GetInputStreamAt(0));
+            return input;
+        }
+
+
+        private async Task<bool> isAvatarExist(string avatarPath)
+        {
+            try
+            {
+                StorageFile avatar = await StorageFile.GetFileFromApplicationUriAsync(new Uri(ApplicationData.Current.LocalFolder.Path + avatarPath));
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
+
         private void more_declaration_panel_Tapped(object sender, TappedRoutedEventArgs e)
         {
             StackPanel stack = sender as StackPanel;
             FlyoutBase.ShowAttachedFlyout(stack);
         }
-        
-        //更多，更改昵称
+
+        private void friend_add_button_Click(object sender, RoutedEventArgs e)
+        {
+            add_friend_controll();
+        }
+        private async void add_friend_controll()
+        {
+            await App.GoodNightService.AddFriend(friend_add_text.Text);
+            reflesh_friendList();
+        }
+
+        private async Task reflesh_friendList()
+        {
+            List<Member> friend_listAsMember = new List<Member>();
+            foreach (Friend s in App.GoodNightService.UserFriendTable)
+            {
+                if (s.MemberFirst == App.GoodNightService.CurrentAccount.Id)
+                {
+                    friend_listAsMember.Add(App.GoodNightService.UserTable.Find(delegate(Member _member) { return _member.Id == s.MemberSecond; }));
+                }
+                if (s.MemberSecond == App.GoodNightService.CurrentAccount.Id)
+                {
+                    friend_listAsMember.Add(App.GoodNightService.UserTable.Find(delegate(Member _member) { return _member.Id == s.MemberFirst; }));
+                }
+            }
+            List<DB_Friend> friendList = new List<DB_Friend>();
+            StorageFolder friendFolder=  await ApplicationData.Current.LocalFolder.CreateFolderAsync("Friends",CreationCollisionOption.OpenIfExists);
+            foreach(Member s in friend_listAsMember)
+            {
+                friendList.Add(new DB_Friend
+                {
+                    userID = s.Id,
+                    NAME = s.Name,
+                    IMAGE_PATH =ApplicationData.Current.LocalFolder.Path+ "//Friends//avatar_" + s.Id + "_" + s.ImageUrl.GetHashCode() + ".png",
+                });
+                if (s.ImageUrl != "test url")
+                {
+                    await DownloadImgToFile(friendFolder, "avatar_" + s.Id + "_" + s.ImageUrl.GetHashCode() + ".png", s.ImageUrl);
+                }
+            }
+            Friend_list.ItemsSource = friendList;
+        }
+
         private void more_name_panel_Tapped(object sender, TappedRoutedEventArgs e)
         {
             StackPanel stack = sender as StackPanel;
             FlyoutBase.ShowAttachedFlyout(stack);
         }
-        //更多，确认更改昵称
+
         private void more_nickName_confirm_Click(object sender, RoutedEventArgs e)
         {
             App.GoodNightService.CurrentAccount.Name = more_nickName_flyout.Text;
             updateAndReflesh_CurrentAccount();
             name_flyout.Hide();
         }
-        //更多，取消更改昵称
+
         private void more_nickName_cancel_Click(object sender, RoutedEventArgs e)
         {
             name_flyout.Hide();
         }
-        
+
+        private void avatar_img_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            Image img=sender as Image;
+            avatar_img_detail.Source = avatar_img.Source;
+            FlyoutBase.ShowAttachedFlyout(img);
+        }
+
+        private async void avatar_change_Click(object sender, RoutedEventArgs e)
+        {
+            StorageFile img_FilePicked = await imgpicker.PickSingleFileAsync();
+            DB_account db_account=new DB_account();
+            if(img_FilePicked!=null)
+            {
+                StorageFolder accountFolder = await StorageFolder.GetFolderFromPathAsync(ApplicationData.Current.LocalFolder.Path);
+                accountFolder = await accountFolder.CreateFolderAsync("account", CreationCollisionOption.OpenIfExists);
+                StorageFile avatarFile = await img_FilePicked.CopyAsync(accountFolder, "avatar_" + db_account.userID, NameCollisionOption.ReplaceExisting);
+                App.GoodNightService.UploadImage(App.GoodNightService.CurrentAccount.Account, avatarFile);
+            }
+            avatar_flyout.Hide();
+        }
+
+        private void cancel_Click(object sender, RoutedEventArgs e)
+        {
+            avatar_flyout.Hide();
+        }
     }
 }

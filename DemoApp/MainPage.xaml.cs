@@ -19,6 +19,7 @@ using Microsoft.WindowsAzure.Storage;
 using GoodNightService.Model;
 using Windows.Storage;
 
+
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=391641 上有介绍
 
 namespace DemoApp
@@ -28,6 +29,7 @@ namespace DemoApp
     /// </summary>
     public sealed partial class MainPage : Page
     {
+      
         public MainPage()
         {
             this.InitializeComponent();

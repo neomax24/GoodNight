@@ -18,6 +18,8 @@ namespace GoodNight_Test_0
         public int ID { get { return id; } set { id = value; } }
         private string name;
         public string NAME { get { return name; } set { name = value; } }
+        private string _userID;
+        public string userID { get { return _userID; } set { _userID = value; } }
         private string image_path;
         public string IMAGE_PATH { get { return image_path; } set { image_path = value; } }
     }
