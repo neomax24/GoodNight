@@ -39,8 +39,8 @@ namespace GoodNight_Test_0
                 else _declaration = value; 
             } 
         }
-        private string _avatarPath = "\\more\\avatar.jpg";
-        public string avatarPath { get { return _avatarPath; } }
+        private string _avatarPath = "\\account\\avatar.png";
+        public string avatarPath { get { return _avatarPath; } set { _avatarPath = value; } }
         private int _sex;
         public int sex { get { return _sex; } set { _sex = value; } }
 

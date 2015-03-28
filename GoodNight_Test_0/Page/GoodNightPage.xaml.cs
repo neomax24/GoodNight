@@ -25,6 +25,9 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.Graphics.Imaging;
 using Windows.Storage.Streams;
 using GoodNightService.Model;
+using Windows.Storage.Pickers;
+using Windows.Web.Http;
+using Microsoft.WindowsAzure;
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
 
@@ -38,6 +41,9 @@ namespace GoodNight_Test_0
 
         private List<DB_TimePeriodList> timePeriodListData=new List<DB_TimePeriodList>();
         private List<DB_TimePointList> timePointListData=new List<DB_TimePointList>();
+
+        FileOpenPicker imgpicker = new FileOpenPicker();
+
 
         public GoodNightPage()
         {
@@ -57,21 +63,21 @@ namespace GoodNight_Test_0
 
         private void Initialization()
         {
+            InitializationImgPicker();
             InitializationTimer();
             InitializationDB();
             reflesh_friendList();
         }
 
+        private void InitializationImgPicker()
+        {
+            imgpicker.FileTypeFilter.Add(".jpg");
+            imgpicker.FileTypeFilter.Add(".png");
+            imgpicker.ContinuationData["Operation"] = "Image";
+        }
+
         private async void Test_More()
         {
-
-            StorageFolder applicationFolder = ApplicationData.Current.LocalFolder;
-            await applicationFolder.CreateFolderAsync("account", CreationCollisionOption.ReplaceExisting);
-            StorageFolder imageFolder = await applicationFolder.GetFolderAsync("account");
-            await imageFolder.CreateFileAsync("avatar.jpg", CreationCollisionOption.ReplaceExisting);
-            StorageFile imageFile = await imageFolder.GetFileAsync("avatar.jpg");
-            StorageFile inFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Resource/avatar_test.jpg"));
-            await inFile.CopyAndReplaceAsync(imageFile);
             updateAndReflesh_CurrentAccount();
         }
 
@@ -115,7 +121,7 @@ namespace GoodNight_Test_0
             DB_account_Controll db_account = new DB_account_Controll();
             GoodNightService.Model.Member account_temp=App.GoodNightService.CurrentAccount;
 
-            db_account.initializate_account(
+            await db_account.initializate_account(
                 new DB_account
                 {
                     userID=account_temp.Id,
@@ -416,7 +422,8 @@ namespace GoodNight_Test_0
                     userID = account_temp.Id,
                     declaration = account_temp.Description,
                     nickName = account_temp.Name,
-                    Token = account_temp.Token
+                    Token = account_temp.Token,
+                    avatarPath = "avatar_" + App.GoodNightService.CurrentAccount.Id +"_"+App.GoodNightService.CurrentAccount.ImageUrl.GetHashCode()+".png",
                 });
             DB_account_Controll moreControll = new DB_account_Controll();
             DB_account more = await moreControll.get_account();
@@ -424,8 +431,63 @@ namespace GoodNight_Test_0
             more_nickName_flyout.Text = more.nickName;
             more_sex.SelectedIndex = more.sex;
             declarration_show.Text = more.declaration;
-            avatar_img.Source = new BitmapImage(new Uri(applicationFolder.Path + more.avatarPath));
+
+            StorageFile avatarFile = await DownloadImgToFile(await applicationFolder.CreateFolderAsync("account", CreationCollisionOption.OpenIfExists), more.avatarPath, App.GoodNightService.CurrentAccount.ImageUrl);
+            BitmapImage bitmap_avatar = new BitmapImage();
+            bitmap_avatar.SetSource(await avatarFile.OpenAsync(FileAccessMode.Read));
+            avatar_img.Source = bitmap_avatar;
             more_declaration.Text = more.declaration;
+        }
+        private async Task<StorageFile> DownloadImgToFile(StorageFolder Folder,string fileName,string uri)
+        {
+            bool isExists = false;
+            try
+            {
+                StorageFile file = await Folder.CreateFileAsync(fileName, CreationCollisionOption.FailIfExists);
+            }
+            catch
+            {
+                isExists = true;
+            }
+            if (isExists != true)
+            {
+                Stream stream = await UriToStream(new Uri(uri));
+                StorageFile file = await Folder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+                using (IRandomAccessStream output = await file.OpenAsync(FileAccessMode.ReadWrite))
+                {
+                    Stream outputstream = WindowsRuntimeStreamExtensions.AsStreamForWrite(output.GetOutputStreamAt(0));
+                    await stream.CopyToAsync(outputstream);
+                    outputstream.Dispose();
+                    stream.Dispose();
+                }
+                return file;
+            }
+            else
+            {
+                return await Folder.GetFileAsync(fileName);
+            }
+        }
+
+        private async Task<Stream> UriToStream(Uri uri)
+        {
+            var rass = RandomAccessStreamReference.CreateFromUri(uri);
+            IRandomAccessStream inputStream = await rass.OpenReadAsync();
+            Stream input = WindowsRuntimeStreamExtensions.AsStreamForRead(inputStream.GetInputStreamAt(0));
+            return input;
+        }
+
+
+        private async Task<bool> isAvatarExist(string avatarPath)
+        {
+            try
+            {
+                StorageFile avatar = await StorageFile.GetFileFromApplicationUriAsync(new Uri(ApplicationData.Current.LocalFolder.Path + avatarPath));
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
         }
 
         private void more_declaration_panel_Tapped(object sender, TappedRoutedEventArgs e)
@@ -455,7 +517,7 @@ namespace GoodNight_Test_0
                 }
                 if (s.MemberSecond == App.GoodNightService.CurrentAccount.Id)
                 {
-                    friend_list_tamp.Add(App.GoodNightService.UserTable.Find(delegate(Member _menber) { return _menber.Id == s.MemberFirst; }));
+                    friend_list_tamp.Add(App.GoodNightService.UserTable.Find(delegate(Member _member) { return _member.Id == s.MemberFirst; }));
                 }
             }
             Friend_list.ItemsSource = friend_list_tamp;
@@ -477,6 +539,32 @@ namespace GoodNight_Test_0
         private void more_nickName_cancel_Click(object sender, RoutedEventArgs e)
         {
             name_flyout.Hide();
+        }
+
+        private void avatar_img_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            Image img=sender as Image;
+            avatar_img_detail.Source = avatar_img.Source;
+            FlyoutBase.ShowAttachedFlyout(img);
+        }
+
+        private async void avatar_change_Click(object sender, RoutedEventArgs e)
+        {
+            StorageFile img_FilePicked = await imgpicker.PickSingleFileAsync();
+            DB_account db_account=new DB_account();
+            if(img_FilePicked!=null)
+            {
+                StorageFolder accountFolder = await StorageFolder.GetFolderFromPathAsync(ApplicationData.Current.LocalFolder.Path);
+                accountFolder = await accountFolder.CreateFolderAsync("account", CreationCollisionOption.OpenIfExists);
+                StorageFile avatarFile = await img_FilePicked.CopyAsync(accountFolder, "avatar_" + db_account.userID, NameCollisionOption.ReplaceExisting);
+                App.GoodNightService.UploadImage(App.GoodNightService.CurrentAccount.Account, avatarFile);
+            }
+            avatar_flyout.Hide();
+        }
+
+        private void cancel_Click(object sender, RoutedEventArgs e)
+        {
+            avatar_flyout.Hide();
         }
     }
 }

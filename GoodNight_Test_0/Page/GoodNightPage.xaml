@@ -60,7 +60,7 @@
                                                 </MenuFlyout>
                                             </FlyoutBase.AttachedFlyout>
                                         </StackPanel>
-                                        <ProgressBar  Minimum="0" Maximum="{Binding Path=TIME_PERIOD_second}" Value="{Binding Path=TimePeriod_barValue,Mode=OneWay}"></ProgressBar>
+                                        <ProgressBar  Minimum="0" Maximum="{Binding Path=TIME_PERIOD_second}" Height="10" Margin="10,0,10,0" Value="{Binding Path=TimePeriod_barValue,Mode=OneWay}" Foreground="White"></ProgressBar>
                                     </StackPanel>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
@@ -123,7 +123,27 @@
                     <TextBlock Name="uidtest" Margin="0,0,0,327"></TextBlock>-->
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <Image Height="128" Width="128" Name="avatar_img"></Image>
+                            <Image Height="128" Width="128" Name="avatar_img" Tapped="avatar_img_Tapped" Source="ms-appx:///Resource/avatar_test.jpg">
+                                <FlyoutBase.AttachedFlyout>
+                                    <Flyout x:Name="avatar_flyout" Placement="Full">
+                                        <Grid Background="LightSeaGreen">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"></RowDefinition>
+                                                <RowDefinition Height="*"></RowDefinition>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Image Grid.Row="0" Grid.Column="1" Height="128" Width="128" Name="avatar_img_detail"></Image>
+                                            <Button Grid.Row="1" Grid.Column="1" Content="更换头像" Name="avatar_change" Click="avatar_change_Click"></Button>
+                                            <Button Grid.Row="1" Grid.Column="2" Content="取消" Name="cancel" Click="cancel_Click"></Button>
+                                        </Grid>
+                                    </Flyout>
+                                </FlyoutBase.AttachedFlyout>
+                            </Image>
                         </StackPanel>
                         <StackPanel VerticalAlignment="Center">
                             <TextBlock Name="declarration_show"></TextBlock>

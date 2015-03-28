@@ -260,6 +260,7 @@ namespace GoodNightService
         public async void AddPointment(TimeSpan time,string detail,string subject)
         {
             var appointment = new Appointment { 
+                
                 Details=detail,
                 Subject=subject,
                 StartTime=DateTime.Now
@@ -277,6 +278,7 @@ namespace GoodNightService
             await blockBlob.UploadFromFileAsync(file);
            
         }
+
 
     }
 }
