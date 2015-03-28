@@ -31,26 +31,18 @@
         </StackPanel>
 
         <!--TODO: 应将内容放入以下网格-->
-        <Grid Grid.Row="1" x:Name="ContentRoot" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,0,10,0">
+        <Grid Grid.Row="1" x:Name="ContentRoot" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="12,0,12,5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Top">
-                <TextBox Name="email_textbox"  VerticalAlignment="Center" TextWrapping="Wrap" Text="邮箱地址"  />
+                <TextBox Name="email_textbox"  VerticalAlignment="Center" TextWrapping="Wrap" Text="Admin@admin.com"  />
                 <PasswordBox Name="password_textbox"   VerticalAlignment="Center"   />
-                <CheckBox x:Name="loginauto" Content="自动登陆" IsChecked="True"/>
-                <!--TODO: 微博登陆测试用 -->
-                <!--
-                    <TextBlock Name="weibo_uid_test" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Center"/>
-                -->
-                <Button Name="login_button" Click="login_button_Click" Content="确认登陆" Width="200" BorderBrush="White" HorizontalAlignment="Center"/>
+                <CheckBox x:Name="loginauto" Content="自动登陆" IsChecked="True"/>        
+                <Button Name="login_button" Click="login_button_Click" Content="确认登陆" Width="200" Height="70" BorderBrush="White" HorizontalAlignment="Center"/>
             </StackPanel>
-            <!-- 
-                <Grid Grid.Row="1" HorizontalAlignment="Stretch"> 
-                <Button Name="login_button" Click="login_button_Click" Content="登陆" Width="80" BorderBrush="White"/>
-                </Grid> 
-            -->
+            
             <Grid Grid.Row="2" VerticalAlignment="Bottom" Margin="0,50,0,40">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>

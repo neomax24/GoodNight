@@ -15,11 +15,11 @@
             <SolidColorBrush Color="#04b9bf"/>
         </Grid.Background>
         <Pivot Title="晚安">
-            <PivotItem Header="晚安自己" Margin="10,0,10,5">
+            <PivotItem Header="晚安自己" Margin="12,0,12,5">
                 <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="4*"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="1.5*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Visible" >
@@ -41,19 +41,19 @@
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
-                        <TextBlock Text="帮我计时" FontSize="28" HorizontalAlignment="Left"/>
+                        <TextBlock Text="帮我计时(分钟)" FontSize="28" HorizontalAlignment="Left"/>
                         <ListView x:Name="time_Period_list" SelectionMode="Extended">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel>
                                         <StackPanel Name="timePeriod_stackPanel" Orientation="Horizontal" Holding="timePeriod_stackPanel_Holding">
                                             <TextBlock Text="{Binding NAME}" FontSize="26" Margin="12,6,12,12" Width="140" Padding="0,8,0,0" ></TextBlock>
-                                            <Button Content="{Binding TIME_PERIOD}" Name="Period_picker_button" Click="Period_picker_button_Click">
-                                                <FlyoutBase.AttachedFlyout>
-                                                    <TimePickerFlyout x:Name="Period_pickerFlyout" TimePicked="Period_pickerFlyout_TimePicked"></TimePickerFlyout>
-                                                </FlyoutBase.AttachedFlyout>
-                                            </Button>
-                                            <c4f:OpacityToggleButton  Name="timePeriod_IsWork" Click="timePeriod_IsWork_Click"  IsChecked="{Binding Path=IS_WORK,Mode=OneWay}" Margin="20,0,0,0"></c4f:OpacityToggleButton>
+                                                <Button Content="{Binding TIME_PERIOD}" Name="Period_picker_button" Click="Period_picker_button_Click">
+                                                    <FlyoutBase.AttachedFlyout>
+                                                        <TimePickerFlyout x:Name="Period_pickerFlyout" TimePicked="Period_pickerFlyout_TimePicked"></TimePickerFlyout>
+                                                    </FlyoutBase.AttachedFlyout>
+                                                </Button>
+                                                <c4f:OpacityToggleButton  Name="timePeriod_IsWork" Click="timePeriod_IsWork_Click"  IsChecked="{Binding Path=IS_WORK,Mode=OneWay}" Margin="20,0,0,20"></c4f:OpacityToggleButton>
                                             <FlyoutBase.AttachedFlyout>
                                                 <MenuFlyout>
                                                     <MenuFlyoutItem Name="timePeriod_delete" Text="删除" Click="timePeriod_delete_Click"></MenuFlyoutItem>
@@ -76,28 +76,45 @@
                         </MenuFlyout>
                     </Button.Flyout>
                 </Button>
-                <Image Grid.Row="2" Source="/Assets/speaker.png" Stretch="Uniform" Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Center" />
+                <Image Grid.Row="2" Source="/Assets/speaker.png" Stretch="Uniform" Height="50" VerticalAlignment="Bottom" HorizontalAlignment="Center" Tapped="Goodnight_Speaker_Tapped"/>
     </Grid>
     </PivotItem>
             <PivotItem Header="晚安朋友">
-                <Grid >
-                    <ListView Name="Friend_list" Margin="0,10,0,60">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Height="36" Width="36"></Image>
-                                    <TextBlock Text="{Binding Name}"></TextBlock>
-                                    <Button></Button>
-                                    <Button></Button>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+                <Grid Margin="12,0,12,5" HorizontalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="5*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Visible" >
+                        <ListView Name="Friend_list" >
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid  HorizontalAlignment="Stretch" >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <!--头像和昵称-->
+                                        <StackPanel Grid.Column="0" HorizontalAlignment="Stretch" Orientation="Horizontal" Margin="0,2,2,5">
+                                            <Image Height="60" VerticalAlignment="Center" Source="/Resource/jinse.png"></Image>
+                                            <TextBlock Text="{Binding Name}" Margin="10,0,0,0" FontSize="22" VerticalAlignment="Center"></TextBlock>
+                                        </StackPanel>
+                                        <!--提醒和消息按钮-->
+                                        <StackPanel Grid.Column="1" HorizontalAlignment="Stretch" Orientation="Horizontal" Margin="0,2,2,5">
+                                            <TextBlock Grid.Column="1" Text="haha"/>
+                                            <Image  Grid.Column="1" Height="60" VerticalAlignment="Center" Source="Resource/star01.png"></Image>
+                                            <Image  HorizontalAlignment="Right" VerticalAlignment="Center" Source="Resource/moon01.png"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </ScrollViewer>
                     <Grid Margin="0,423,0,0">
                         <Button Content="查找" Margin="20,0,0,0">
                             <Button.Flyout>
                                 <Flyout Placement="Top">
-                                    <Grid Margin="10,0,10,0">
+                                    <Grid Margin="12,0,12,5">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="*"></RowDefinition>
                                             <RowDefinition Height="*"></RowDefinition>
@@ -107,7 +124,7 @@
                                             <ColumnDefinition Width="*"></ColumnDefinition>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock  Text="寻找我的睡友" FontSize="26"></TextBlock>
-                                        <TextBox Grid.Row="1" Grid.Column="0" Name="friend_add_text"></TextBox>
+                                        <TextBox Grid.Row="1" Grid.Column="0" Name="friend_add_text" FontSize="26"></TextBox>
                                         <Button Click="friend_add_button_Click" Content="添加" Name="friend_add_button" MinWidth="0" Width="60" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1"></Button>
                                     </Grid>
                                 </Flyout>
@@ -116,115 +133,123 @@
                         <Button Content="通知" Margin="0,0,20,0" HorizontalAlignment="Right"></Button>
                     </Grid>
                 </Grid>
+                
             </PivotItem>
             <PivotItem Header="更多">
-                <Grid>
-                    <!--
-                    <TextBlock Name="uidtest" Margin="0,0,0,327"></TextBlock>-->
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <Image Height="128" Width="128" Name="avatar_img"></Image>
-                        </StackPanel>
+                <Grid Margin="12,0,12,5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="2*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <!--头像和宣言-->
+                    <Grid Grid.Row="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="3*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Image Grid.Row="0" Name="avatar_img" VerticalAlignment="Stretch" HorizontalAlignment="Center" Source="Resource/avatar_test.jpg"></Image>
+                        <TextBlock Grid.Row="1" Name="declarration_show" HorizontalAlignment="Center"  FontSize="22"></TextBlock>
+                    </Grid>
+                    <!--个人设置-->
+                    <Grid Grid.Row="1">
                         <StackPanel VerticalAlignment="Center">
-                            <TextBlock Name="declarration_show"></TextBlock>
-                        </StackPanel>
-                        <StackPanel Name="more_name_panel" Tapped="more_name_panel_Tapped">
-                            <FlyoutBase.AttachedFlyout>
-                                <Flyout Placement="Top" x:Name="name_flyout">
-                                    <StackPanel>
-                                        <TextBlock Text="昵称"></TextBlock>
-                                        <TextBox Name="more_nickName_flyout"></TextBox>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Button Name="more_nickName_confirm" Content="confirm" Click="more_nickName_confirm_Click"></Button>
-                                            <Button Name="more_nickName_cancel" Content="cancel" Click="more_nickName_cancel_Click"></Button>
+                            <!--姓名-->
+                            <StackPanel Name="more_name_panel" Tapped="more_name_panel_Tapped">
+                                <FlyoutBase.AttachedFlyout>
+                                    <Flyout Placement="Top" x:Name="name_flyout">
+                                        <StackPanel>
+                                            <TextBlock Text="昵称"></TextBlock>
+                                            <TextBox Name="more_nickName_flyout"></TextBox>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Name="more_nickName_confirm" Content="confirm" Click="more_nickName_confirm_Click"></Button>
+                                                <Button Name="more_nickName_cancel" Content="cancel" Click="more_nickName_cancel_Click"></Button>
+                                            </StackPanel>
                                         </StackPanel>
-                                        
-                                    </StackPanel>
-                                </Flyout>
-                            </FlyoutBase.AttachedFlyout>
-                            <Grid>
-                                <TextBlock FontSize="26" Text="昵称" Margin="5,5,5,5"></TextBlock>
-                                <TextBlock Name="more_nickName" FontSize="26" Text="TEST"  HorizontalAlignment="Right" VerticalAlignment="Center" ></TextBlock>
-                            </Grid>
-                        </StackPanel>
-                        <StackPanel>
-                            <Grid>
-                                <TextBlock  FontSize="26" Text="性别" Margin="5,5,5,5"></TextBlock>
-                                <ComboBox Name="more_sex" HorizontalAlignment="Right" FontSize="18" Width="55" BorderThickness="1" Margin="0,-9,0,0" VerticalContentAlignment="Bottom">
-                                    <ComboBoxItem  Content="♂" HorizontalAlignment="Center"></ComboBoxItem>
-                                    <ComboBoxItem Content="♀" HorizontalAlignment="Center"></ComboBoxItem>
-                                </ComboBox>
-                            </Grid>
-                        </StackPanel>
-                        <StackPanel Name="more_declaration_panel" Tapped="more_declaration_panel_Tapped">
-                            <FlyoutBase.AttachedFlyout>
-                                <Flyout Placement="Full" x:Name="declaration_flyout">
-                                    <StackPanel VerticalAlignment="Center" Margin="20,10,20,10">
-                                        <TextBlock Text="我的早睡宣言" FontSize="26"></TextBlock>
-                                        <TextBox Name="more_declaration"></TextBox>
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                            <Button Content="确认"  Name="more_declaration_confirm" Click="more_declaration_confirm_Click" Margin="0,0,20,0"></Button>
-                                            <Button Content="取消" Name="more_declaration_cancel" Click="more_declaration_cancel_Click" Margin="20,0,0,0"></Button>
+                                    </Flyout>
+                                </FlyoutBase.AttachedFlyout>
+                                <Grid>
+                                    <TextBlock FontSize="26" Text="昵称" ></TextBlock>
+                                    <TextBlock Name="more_nickName" FontSize="26" Text="TEST"  HorizontalAlignment="Right" VerticalAlignment="Center" ></TextBlock>
+                                </Grid>
+                            </StackPanel>
+                            <!--性别-->
+                            <StackPanel>
+                                <Grid>
+                                    <TextBlock  FontSize="26" Text="性别"></TextBlock>
+                                    <ComboBox Name="more_sex" HorizontalAlignment="Right" FontSize="18" Width="55" BorderThickness="1" Margin="0,-9,0,0" VerticalContentAlignment="Bottom">
+                                        <ComboBoxItem  Content="♂" HorizontalAlignment="Center" VerticalAlignment="Stretch"></ComboBoxItem>
+                                        <ComboBoxItem Content="♀" HorizontalAlignment="Center" VerticalAlignment="Stretch"></ComboBoxItem>
+                                    </ComboBox>
+                                </Grid>
+                            </StackPanel>
+                            <!-- 早睡宣言-->
+                            <StackPanel Name="more_declaration_panel" Tapped="more_declaration_panel_Tapped">
+                                <FlyoutBase.AttachedFlyout>
+                                    <Flyout Placement="Full" x:Name="declaration_flyout">
+                                        <StackPanel VerticalAlignment="Center" Margin="20,10,20,10">
+                                            <TextBlock Text="我的早睡宣言" FontSize="26"></TextBlock>
+                                            <TextBox Name="more_declaration"></TextBox>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                <Button Content="确认"  Name="more_declaration_confirm" Click="more_declaration_confirm_Click" Margin="0,0,20,0"></Button>
+                                                <Button Content="取消" Name="more_declaration_cancel" Click="more_declaration_cancel_Click" Margin="20,0,0,0"></Button>
+                                            </StackPanel>
                                         </StackPanel>
-                                    </StackPanel>
-                                </Flyout>
-                            </FlyoutBase.AttachedFlyout>
-                            <StackPanel.Transitions>
-                                <TransitionCollection>
-                                    <RepositionThemeTransition/>
-                                </TransitionCollection>
-                            </StackPanel.Transitions>
-                            <Grid>
-                                <TextBlock Text="我的早睡宣言" FontSize="26" Margin="5,5,5,5"></TextBlock>
-                            </Grid>
+                                    </Flyout>
+                                </FlyoutBase.AttachedFlyout>
+                                <StackPanel.Transitions>
+                                    <TransitionCollection>
+                                        <RepositionThemeTransition/>
+                                    </TransitionCollection>
+                                </StackPanel.Transitions>
+                                <Grid>
+                                    <TextBlock Text="我的早睡宣言" FontSize="26"></TextBlock>
+                                </Grid>
+                            </StackPanel>
+                            <!--分割条-->
+                            <Rectangle Height="5" Fill="#FFBFB8B8" Margin="0,5,0,10">
+                                <Rectangle.Transitions>
+                                    <TransitionCollection>
+                                        <RepositionThemeTransition/>
+                                    </TransitionCollection>
+                                </Rectangle.Transitions>
+                            </Rectangle>
+                            <!--意见反馈-->
+                            <StackPanel>
+                                <StackPanel.Transitions>
+                                    <TransitionCollection>
+                                        <RepositionThemeTransition/>
+                                    </TransitionCollection>
+                                </StackPanel.Transitions>
+                                <TextBlock Text="意见反馈" FontSize="26"></TextBlock>
+                            </StackPanel>
+                            <!--关于我们-->
+                            <StackPanel>
+                                <StackPanel.Transitions>
+                                    <TransitionCollection>
+                                        <RepositionThemeTransition/>
+                                    </TransitionCollection>
+                                </StackPanel.Transitions>
+                                <TextBlock Text="关于我们" FontSize="26"></TextBlock>
+                            </StackPanel>
+                            <!--分割条-->
+                            <Rectangle Height="5" Fill="#FFBFB8B8" Margin="0,5,0,10">
+                                <Rectangle.Transitions>
+                                    <TransitionCollection>
+                                        <RepositionThemeTransition/>
+                                    </TransitionCollection>
+                                </Rectangle.Transitions>
+                            </Rectangle>
+                            <!--退出登录-->
+                            <StackPanel>
+                                <StackPanel.Transitions>
+                                    <TransitionCollection>
+                                        <RepositionThemeTransition/>
+                                    </TransitionCollection>
+                                </StackPanel.Transitions>
+                                <TextBlock Text="退出登录" FontSize="26" Margin="5,5,5,5"></TextBlock>
+                            </StackPanel>
                         </StackPanel>
-                        <Rectangle Height="5" Fill="#FFBFB8B8" Margin="0,5,0,10">
-                            <Rectangle.Transitions>
-                                <TransitionCollection>
-                                    <RepositionThemeTransition/>
-                                </TransitionCollection>
-                            </Rectangle.Transitions>
-                        </Rectangle>
-                        <StackPanel>
-                            <StackPanel.Transitions>
-                                <TransitionCollection>
-                                    <RepositionThemeTransition/>
-                                </TransitionCollection>
-                            </StackPanel.Transitions>
-                            <TextBlock Text="检查更新" Margin="5,5,5,5" FontSize="26"></TextBlock>
-                        </StackPanel>
-                        <StackPanel>
-                            <StackPanel.Transitions>
-                                <TransitionCollection>
-                                    <RepositionThemeTransition/>
-                                </TransitionCollection>
-                            </StackPanel.Transitions>
-                            <TextBlock Text="意见反馈" Margin="5,5,5,5" FontSize="26"></TextBlock>
-                        </StackPanel>
-                        <StackPanel>
-                            <StackPanel.Transitions>
-                                <TransitionCollection>
-                                    <RepositionThemeTransition/>
-                                </TransitionCollection>
-                            </StackPanel.Transitions>
-                            <TextBlock Text="关于我们" Margin="5,5,5,5" FontSize="26"></TextBlock>
-                        </StackPanel>
-                        <Rectangle Height="5" Fill="#FFBFB8B8" Margin="0,5,0,10">
-                            <Rectangle.Transitions>
-                                <TransitionCollection>
-                                    <RepositionThemeTransition/>
-                                </TransitionCollection>
-                            </Rectangle.Transitions>
-                        </Rectangle>
-                        <StackPanel>
-                            <StackPanel.Transitions>
-                                <TransitionCollection>
-                                    <RepositionThemeTransition/>
-                                </TransitionCollection>
-                            </StackPanel.Transitions>
-                            <TextBlock Text="退出登录" FontSize="26" Margin="5,5,5,5"></TextBlock>
-                        </StackPanel>
-                    </StackPanel>
+                    </Grid>
                 </Grid>
             </PivotItem>
         </Pivot>
