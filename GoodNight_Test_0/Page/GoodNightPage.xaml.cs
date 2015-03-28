@@ -66,7 +66,6 @@ namespace GoodNight_Test_0
             InitializationImgPicker();
             InitializationTimer();
             InitializationDB();
-            reflesh_friendList();
         }
 
         private void InitializationImgPicker()
@@ -76,9 +75,9 @@ namespace GoodNight_Test_0
             imgpicker.ContinuationData["Operation"] = "Image";
         }
 
-        private async void Test_More()
+        private async Task Test_More()
         {
-            updateAndReflesh_CurrentAccount();
+            await updateAndReflesh_CurrentAccount();
         }
 
 
@@ -129,7 +128,8 @@ namespace GoodNight_Test_0
                     nickName=account_temp.Name,
                     Token=account_temp.Token
                 });
-            Test_More();
+            await Test_More();
+            await reflesh_friendList();
         }
 
         private void TextBlock_SelectionChanged(object sender, RoutedEventArgs e)
@@ -408,7 +408,7 @@ namespace GoodNight_Test_0
             declaration_flyout.Hide();
         }
 
-        private async void updateAndReflesh_CurrentAccount()
+        private async Task updateAndReflesh_CurrentAccount()
         {
             await App.GoodNightService.MobileService.GetTable<Member>().UpdateAsync(App.GoodNightService.CurrentAccount);
             
@@ -506,21 +506,36 @@ namespace GoodNight_Test_0
             reflesh_friendList();
         }
 
-        private void reflesh_friendList()
+        private async Task reflesh_friendList()
         {
-            List<Member> friend_list_tamp = new List<Member>();
+            List<Member> friend_listAsMember = new List<Member>();
             foreach (Friend s in App.GoodNightService.UserFriendTable)
             {
                 if (s.MemberFirst == App.GoodNightService.CurrentAccount.Id)
                 {
-                    friend_list_tamp.Add(App.GoodNightService.UserTable.Find(delegate(Member _member) { return _member.Id == s.MemberSecond; }));
+                    friend_listAsMember.Add(App.GoodNightService.UserTable.Find(delegate(Member _member) { return _member.Id == s.MemberSecond; }));
                 }
                 if (s.MemberSecond == App.GoodNightService.CurrentAccount.Id)
                 {
-                    friend_list_tamp.Add(App.GoodNightService.UserTable.Find(delegate(Member _member) { return _member.Id == s.MemberFirst; }));
+                    friend_listAsMember.Add(App.GoodNightService.UserTable.Find(delegate(Member _member) { return _member.Id == s.MemberFirst; }));
                 }
             }
-            Friend_list.ItemsSource = friend_list_tamp;
+            List<DB_Friend> friendList = new List<DB_Friend>();
+            StorageFolder friendFolder=  await ApplicationData.Current.LocalFolder.CreateFolderAsync("Friends",CreationCollisionOption.OpenIfExists);
+            foreach(Member s in friend_listAsMember)
+            {
+                friendList.Add(new DB_Friend
+                {
+                    userID = s.Id,
+                    NAME = s.Name,
+                    IMAGE_PATH =ApplicationData.Current.LocalFolder.Path+ "//Friends//avatar_" + s.Id + "_" + s.ImageUrl.GetHashCode() + ".png",
+                });
+                if (s.ImageUrl != "test url")
+                {
+                    await DownloadImgToFile(friendFolder, "avatar_" + s.Id + "_" + s.ImageUrl.GetHashCode() + ".png", s.ImageUrl);
+                }
+            }
+            Friend_list.ItemsSource = friendList;
         }
 
         private void more_name_panel_Tapped(object sender, TappedRoutedEventArgs e)

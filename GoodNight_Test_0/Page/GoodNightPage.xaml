@@ -85,8 +85,8 @@
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Height="36" Width="36"></Image>
-                                    <TextBlock Text="{Binding Name}"></TextBlock>
+                                    <Image Source="{Binding IMAGE_PATH}" Height="36" Width="36"></Image>
+                                    <TextBlock Text="{Binding NAME}"></TextBlock>
                                     <Button></Button>
                                     <Button></Button>
                                 </StackPanel>
